@@ -31,8 +31,20 @@ export const  constantRoutes =[
             {
                 path: 'home',
                 component: () => import('@/views/Home'),
-                name: 'home',
+                name: '首页',
                 meta: { title: '首页', icon: 'pdf', affix: true }
+            }
+        ]
+    },
+    {
+        path: '/organizational',
+        component: Layout,
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/organizational'),
+                name: '组织架构',
+                meta: { title: '组织架构', icon: 'pdf', affix: true }
             }
         ]
     },
