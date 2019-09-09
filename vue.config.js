@@ -17,7 +17,16 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
-    }
+    },
+    // proxy: {
+    //   '/api': {
+    //     target: config.baseUrl,
+    //     changeOrigin: true,
+    //     pathRewrite: {
+    //       ['^' + process.env.VUE_APP_BASE_API]: ''
+    //     }
+    //   }
+    // },
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
