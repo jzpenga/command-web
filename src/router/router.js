@@ -37,6 +37,18 @@ export const  constantRoutes =[
         ]
     },
     {
+        path: '/userManager',
+        component: Layout,
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/userManager'),
+                name: '用户管理',
+                meta: { title: '用户管理', icon: 'pdf', affix: true }
+            }
+        ]
+    },
+    {
         path: '/organizational',
         component: Layout,
         children: [
@@ -45,6 +57,18 @@ export const  constantRoutes =[
                 component: () => import('@/views/organizational'),
                 name: '组织架构',
                 meta: { title: '组织架构', icon: 'pdf', affix: true }
+            }
+        ]
+    },
+    {
+        path: '/roleManager',
+        component: Layout,
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/roleManager'),
+                name: '角色管理',
+                meta: { title: '角色管理', icon: 'pdf', affix: true }
             }
         ]
     },
