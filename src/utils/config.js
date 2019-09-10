@@ -1,4 +1,4 @@
 export const config ={
-    baseUrl:'http://192.168.1.195:8060/command/',
+    baseUrl:'http://47.104.161.130:8061',
     apiPrefix:'api'
 };

@@ -5,6 +5,7 @@
     <div class="right-menu">
       <template v-if="device!=='mobile'">
       </template>
+      <i class="el-icon-switch-button" @click="logout"></i>
     </div>
   </div>
 </template>
@@ -30,7 +31,7 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      await this.$store.dispatch('user/logout')
+      await this.$store.dispatch('user/logout');
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }
@@ -70,6 +71,7 @@ export default {
   .right-menu {
     float: right;
     height: 100%;
+    margin-right: 50px;
     line-height: 50px;
 
     &:focus {

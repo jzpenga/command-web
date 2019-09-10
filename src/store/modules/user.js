@@ -17,21 +17,14 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo;
     return new Promise((resolve, reject) => {
-      if (username === 'admin' && password === '111111') {
-        commit('SET_TOKEN', 'token-13299876');
-        setToken('token-13299876');
-        resolve();
-      }else {
-        reject()
-      }
-      // login({ username: username.trim(), password: password }).then(response => {
-      //   const { data } = response;
-      //   commit('SET_TOKEN', data.token);
-      //   setToken(data.token)
-      //   resolve()
-      // }).catch(error => {
-      //   reject(error)
-      // })
+      login({ username: username.trim(), password: password }).then(response => {
+        const { data } = response;
+        commit('SET_TOKEN', data.token);
+        setToken(data.token);
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
     })
   },
 
@@ -39,14 +32,10 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        commit('SET_TOKEN', '');
-        removeToken();
-        resetRouter();
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+      commit('SET_TOKEN', '');
+      removeToken();
+      resetRouter();
+      resolve()
     })
   },
 
