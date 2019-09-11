@@ -14,3 +14,26 @@ export function logout() {
     method: 'post'
   })
 }
+
+/**
+ * 获取用户列表
+ * /command/user/userList
+ */
+export function fetchList(data) {
+  return request({
+    url: `/command/user/userList?page=${data.pageNum}&rows=${data.pageSize}`,
+    method: 'get'
+  })
+}
+
+
+/**
+ * 根据id获取用户信息
+ * /command/user/getUserById/{id}
+ */
+export function getUserById(data) {
+  return request({
+    url: `/command/user/getUserById/${data}`,
+    method: 'get'
+  })
+}

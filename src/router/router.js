@@ -45,6 +45,19 @@ export const  constantRoutes =[
                 component: () => import('@/views/userManager'),
                 name: '用户管理',
                 meta: { title: '用户管理', icon: 'pdf', affix: true }
+            },{
+                path: 'addUser',
+                name: 'addUser',
+                component: () => import('@/views/userManager/add'),
+                meta: {title: '添加用户', icon: 'sms-ad'},
+                hidden: true
+            },
+            {
+                path: 'editUser',
+                name: 'editUser',
+                component: () => import('@/views/userManager/update'),
+                meta: {title: '编辑用户', icon: 'sms-ad'},
+                hidden: true
             }
         ]
     },

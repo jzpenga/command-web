@@ -3,7 +3,7 @@
         <el-col :span="8">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
-                    <span>指标分类</span>
+                    <span>分类</span>
                 </div>
                 <div class="card-content">
                     <el-tree :data="treeData" :props="treeProps" @node-click="handleTreeClick"></el-tree>

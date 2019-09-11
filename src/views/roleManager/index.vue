@@ -8,7 +8,7 @@
             <el-button size="mini" class="btn-add" @click="handleAdd()">添加角色</el-button>
         </el-card>
         <div class="table-container">
-            <el-table ref="homeAdvertiseTable"
+            <el-table ref="userRoleTable"
                       :data="list"
                       style="width: 100%;"
                       @selection-change="handleSelectionChange"

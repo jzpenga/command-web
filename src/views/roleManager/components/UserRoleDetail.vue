@@ -111,19 +111,20 @@
         created() {
             if (this.isEdit) {
                 getRoleById(this.$route.query.id).then(response => {
-                    let targetIds = [];
-                    let subjectIds = [];
-                    if (!response.targetIds) {
-                        response.targets.forEach((item) => {
-                            targetIds.push(item.id)
-                        })
-                    }
-                    if (!response.subjectIds) {
-                        response.subjects.forEach((item) => {
-                            subjectIds.push(item.id)
-                        })
-                    }
-                    this.userRole = {...response, targetIds: targetIds,subjectIds:subjectIds,id:this.$route.query.id};
+                    this.userRole = response;
+                    // let targetIds = [];
+                    // let subjectIds = [];
+                    // if (!response.targetIds) {
+                    //     response.targets.forEach((item) => {
+                    //         targetIds.push(item.id)
+                    //     })
+                    // }
+                    // if (!response.subjectIds) {
+                    //     response.subjects.forEach((item) => {
+                    //         subjectIds.push(item.id)
+                    //     })
+                    // }
+                    // this.userRole = {...response, targetIds: targetIds,subjectIds:subjectIds,id:this.$route.query.id};
                 });
             } else {
                 this.userRole = Object.assign({}, defaultUserRole);
