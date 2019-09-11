@@ -69,6 +69,19 @@ export const  constantRoutes =[
                 component: () => import('@/views/roleManager'),
                 name: '角色管理',
                 meta: { title: '角色管理', icon: 'pdf', affix: true }
+            },{
+                path: 'addUserRole',
+                name: 'addUserRole',
+                component: () => import('@/views/roleManager/add'),
+                meta: {title: '添加角色', icon: 'sms-ad'},
+                hidden: true
+            },
+            {
+                path: 'editUserRole',
+                name: 'editUserRole',
+                component: () => import('@/views/roleManager/update'),
+                meta: {title: '编辑角色', icon: 'sms-ad'},
+                hidden: true
             }
         ]
     },
