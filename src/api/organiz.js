@@ -1,11 +1,15 @@
 import request from '@/utils/request'
 
 
-// http://localhost:8060/command/dept/save
-export function save(data) {
+
+
+/**
+ *  组织机构树获取
+ * /command/dept/deptTreeAll
+ */
+export function fetchList() {
     return request({
-        url: '/dept/save',
-        method: 'post',
-        data
+        url: `/command/dept/deptTreeAll`,
+        method: 'get'
     })
 }
