@@ -20,9 +20,9 @@
             <el-form-item label="密码：" prop="password">
                 <el-input type="password" v-model="user.password" class="input-width"></el-input>
             </el-form-item>
-            <el-form-item label="部门：" prop="dept">
+            <el-form-item label="部门：" prop="departmentName">
                 <el-button type="primary" @click="deptDialogVisible = true">选择部门</el-button>
-                <span>  {{user.deptName}}</span>
+                <span>  {{user.departmentName}}</span>
             </el-form-item>
             <el-form-item label="绑定指标：" prop="targetIds">
                 <el-button type="primary" @click="targetDialogVisible = true">绑定指标</el-button>
@@ -82,7 +82,7 @@
                 :before-close="handleClose">
             <el-tree
                     :data="deptTreeData"
-                    ref="detpTree"
+                    ref="deptTree"
                     show-checkbox
                     node-key="id"
                     check-strictly
@@ -118,7 +118,8 @@
     import * as org from "../../../api/organiz";
 
     const defaultUser = {
-        "dept": "1",
+        "departmentId": "",
+        "departmentName": "",
         deptName: "",
         "email": "",
         "head": "",
@@ -179,8 +180,8 @@
             if (this.isEdit) {
                 getUserById(this.$route.query.id).then(response => {
                     this.user = response;
-                    if (response.dept) {
-                        this.deptChecked = [response.dept];
+                    if (response.departmentId) {
+                        this.deptChecked = [response.departmentId];
                     }
                 });
             } else {
@@ -193,12 +194,12 @@
         methods: {
 
             confirmDeptBind() {
-                let deptId = this.$refs.detpTree.getCheckedKeys();
-                let deptName = this.$refs.detpTree.getCheckedNodes();
+                let deptId = this.$refs.deptTree.getCheckedKeys();
+                let deptName = this.$refs.deptTree.getCheckedNodes();
                 if (deptId && deptId.length > 0) {
-                    this.user = {...this.user, dept: deptId[0], deptName: deptName[0].name};
+                    this.user = {...this.user, departmentId: deptId[0], departmentName: deptName[0].name};
                 } else {
-                    this.user = {...this.user, dept: '', deptName: ''};
+                    this.user = {...this.user, departmentId: '', departmentName: ''};
 
                 }
                 this.deptDialogVisible = false;
@@ -253,7 +254,7 @@
                             } else {
                                 saveUser(this.user).then(response => {
                                     this.$refs[formName].resetFields();
-                                    this.user = Object.assign({}, defaultUserRole);
+                                    this.user = Object.assign({}, defaultUser);
                                     this.$message({
                                         message: '提交成功',
                                         type: 'success',
