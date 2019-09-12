@@ -62,7 +62,7 @@
 </template>
 
 <script>
-    import {fetchList} from "../../api/user";
+    import {fetchList,deleteUser} from "../../api/user";
 
     const defaultListQuery = {
         pageNum: 1,
@@ -94,7 +94,8 @@
                 this.multipleSelection = val;
             },
             handleDelete(index,row){
-                //this.deleteHomeAdvertise([row.id]);
+                this.deleteUser([row.id]);
+
             },
             handleAdd(){
                 this.$router.push({path: '/userManager/addUser'})
@@ -120,6 +121,21 @@
                     this.total = response.total;
                 })
             },
+            deleteUser(ids){
+                this.$confirm('是否要删除该用户吗?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    deleteUser(ids).then(response=>{
+                        this.getList();
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                    });
+                })
+            }
 
         },
         created() {

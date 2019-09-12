@@ -51,3 +51,14 @@ export function saveUser(data) {
     data
   })
 }
+
+/**
+ * /command/user/deleteUser
+ */
+export function deleteUser(data) {
+  return request({
+    url: `/command/user/deleteUser`,
+    method: 'delete',
+    data
+  })
+}

@@ -56,7 +56,7 @@
 </template>
 
 <script>
-    import {fetchList} from "../../api/userRole";
+    import {fetchList,deleteRole} from "../../api/userRole";
 
     const defaultListQuery = {
         pageNum: 1,
@@ -88,7 +88,7 @@
                 this.multipleSelection = val;
             },
             handleDelete(index,row){
-                //this.deleteHomeAdvertise([row.id]);
+                this.deleteRole([row.id]);
             },
             handleAdd(){
                 this.$router.push({path: '/roleManager/addUserRole'})
@@ -114,7 +114,21 @@
                     this.total = response.total;
                 })
             },
-
+            deleteRole(ids){
+                this.$confirm('是否要删除该角色吗?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    deleteRole(ids).then(response=>{
+                        this.getList();
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                    });
+                })
+            }
         },
         created() {
             this.getList();

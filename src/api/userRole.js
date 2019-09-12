@@ -34,3 +34,15 @@ export function getRoleById(id) {
     method: 'get'
   })
 }
+
+
+/**
+ * /command/user/deleteRole
+ */
+export function deleteRole(data) {
+  return request({
+    url: `/command/user/deleteRole`,
+    method: 'delete',
+    data
+  })
+}
