@@ -36,7 +36,8 @@
                 :visible.sync="targetDialogVisible"
                 width="50%"
                 :before-close="handleClose">
-            <tree-data-select dataType="target" v-bind:outerSelectList="userRole.targets" v-bind:outerSelectIdList="userRole.targetIds"
+            <tree-data-select dataType="target" v-bind:outerSelectList="userRole.targets"
+                              v-bind:outerSelectIdList="userRole.targetIds"
                               @onDataSelectChange="handleSelectTarget"/>
             <span slot="footer" class="dialog-footer">
     <el-button @click="targetDialogVisible = false">取 消</el-button>
@@ -50,7 +51,8 @@
                 :visible.sync="subjectDialogVisible"
                 width="50%"
                 :before-close="handleClose">
-            <tree-data-select dataType="subject" v-bind:outerSelectList="userRole.subjects" v-bind:outerSelectIdList="userRole.subjectIds"
+            <tree-data-select dataType="subject" v-bind:outerSelectList="userRole.subjects"
+                              v-bind:outerSelectIdList="userRole.subjectIds"
                               @onDataSelectChange="handleSelectSubject"/>
             <span slot="footer" class="dialog-footer">
     <el-button @click="subjectDialogVisible = false">取 消</el-button>
@@ -69,7 +71,6 @@
         "description": "",
         "keyword": "",
         "name": "",
-        "id":0,
         "permissionIds": [],
         "subjectIds": [],
         "targetIds": [],
@@ -112,19 +113,6 @@
             if (this.isEdit) {
                 getRoleById(this.$route.query.id).then(response => {
                     this.userRole = response;
-                    // let targetIds = [];
-                    // let subjectIds = [];
-                    // if (!response.targetIds) {
-                    //     response.targets.forEach((item) => {
-                    //         targetIds.push(item.id)
-                    //     })
-                    // }
-                    // if (!response.subjectIds) {
-                    //     response.subjects.forEach((item) => {
-                    //         subjectIds.push(item.id)
-                    //     })
-                    // }
-                    // this.userRole = {...response, targetIds: targetIds,subjectIds:subjectIds,id:this.$route.query.id};
                 });
             } else {
                 this.userRole = Object.assign({}, defaultUserRole);

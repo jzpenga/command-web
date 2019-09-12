@@ -1,6 +1,6 @@
 <template>
     <el-row :gutter="20">
-        <el-col :span="8">
+        <el-col :span="8" v-if="dataType!=='role'">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
                     <span>分类</span>
@@ -22,7 +22,7 @@
                             <el-checkbox :label="item.id" v-model="item.id" @change="optionalItemClick(item)">
                                 <span>{{item.name}}</span>
                             </el-checkbox>
-                            <i v-if="item.child.length > 0" class="el-icon-circle-plus-outline"
+                            <i v-if="dataType !== 'role' && item.child.length > 0" class="el-icon-circle-plus-outline"
                                @click="loadOptionChild(item)"></i>
                         </div>
                     </el-checkbox-group>
@@ -50,6 +50,7 @@
 <script>
     import {targetTree} from "../../api/mcTarget";
     import {subjectTree} from "../../api/suject";
+    import {fetchList} from "../../api/userRole";
 
 
     export default {
@@ -92,6 +93,10 @@
                         this.treeData = res
                     }
                 )
+            }else if (this.dataType === 'role') {
+                fetchList({pageNum:1,pageSize:1000}).then((res)=>{
+                    this.optionalList = res.rows
+                })
             }
         },
         computed: {},

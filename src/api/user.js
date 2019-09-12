@@ -37,3 +37,17 @@ export function getUserById(data) {
     method: 'get'
   })
 }
+
+
+
+/**
+ * 保存用户信息
+ * /command/user/saveUser
+ */
+export function saveUser(data) {
+  return request({
+    url: `/command/user/saveUser`,
+    method: 'post',
+    data
+  })
+}
