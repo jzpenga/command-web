@@ -32,7 +32,7 @@ export const  constantRoutes =[
                 path: 'home',
                 component: () => import('@/views/Home'),
                 name: '首页',
-                meta: { title: '首页', icon: 'pdf', affix: true }
+                meta: { title: '首页', icon: 'mc_home', affix: true }
             }
         ]
     },
@@ -44,7 +44,7 @@ export const  constantRoutes =[
                 path: 'index',
                 component: () => import('@/views/userManager'),
                 name: '用户管理',
-                meta: { title: '用户管理', icon: 'pdf', affix: true }
+                meta: { title: '用户管理', icon: 'user', affix: true }
             },{
                 path: 'addUser',
                 name: 'addUser',
@@ -69,7 +69,7 @@ export const  constantRoutes =[
                 path: 'index',
                 component: () => import('@/views/organizational'),
                 name: '组织架构',
-                meta: { title: '组织架构', icon: 'pdf', affix: true }
+                meta: { title: '组织架构', icon: 'tree', affix: true }
             }
         ]
     },
@@ -81,7 +81,7 @@ export const  constantRoutes =[
                 path: 'index',
                 component: () => import('@/views/roleManager'),
                 name: '角色管理',
-                meta: { title: '角色管理', icon: 'pdf', affix: true }
+                meta: { title: '角色管理', icon: 'role', affix: true }
             },{
                 path: 'addUserRole',
                 name: 'addUserRole',
