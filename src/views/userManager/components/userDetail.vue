@@ -86,6 +86,7 @@
                     show-checkbox
                     node-key="id"
                     check-strictly
+                    @check="checks"
                     default-expand-all
                     :default-checked-keys="deptChecked"
                     :props="defaultDeptTreeProps">
@@ -192,7 +193,9 @@
             })
         },
         methods: {
-
+            checks(data){
+                this.$refs.deptTree.setCheckedKeys([data.id],true);
+            },
             confirmDeptBind() {
                 let deptId = this.$refs.deptTree.getCheckedKeys();
                 let deptName = this.$refs.deptTree.getCheckedNodes();
