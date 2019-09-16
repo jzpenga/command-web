@@ -110,8 +110,9 @@
                 fetchList(this.listQuery).then(response => {
                     this.listLoading = false;
                     console.log('getList', response)
-                    this.list = response.rows;
-                    this.total = response.total;
+                    const {content,totalElements} = response;
+                    this.list = content;
+                    this.total = Number.parseInt(totalElements);
                 })
             },
             deleteRole(ids){

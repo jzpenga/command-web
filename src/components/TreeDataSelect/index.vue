@@ -36,7 +36,7 @@
                 </div>
                 <div class="card-content">
                     <div v-for="item in selectedList" :key="item.id" class="option-item">
-                        <span>{{ item.name }}</span>
+                        <span>{{ item.name?item.name:item.targetName }}</span>
                         <i class="el-icon-remove-outline" @click="removeSelect(item)"></i>
                     </div>
                 </div>
@@ -95,7 +95,7 @@
                 )
             }else if (this.dataType === 'role') {
                 fetchList({pageNum:1,pageSize:1000}).then((res)=>{
-                    this.optionalList = res.rows
+                    this.optionalList = res.content
                 })
             }
         },

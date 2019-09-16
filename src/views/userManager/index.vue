@@ -116,9 +116,10 @@
                 this.listLoading = true;
                 fetchList(this.listQuery).then(response => {
                     this.listLoading = false;
-                    console.log('getList', response)
-                    this.list = response.rows;
-                    this.total = response.total;
+                    console.log('getList', response);
+                    const {content,totalElements} = response;
+                    this.list = content;
+                    this.total = Number.parseInt(totalElements);
                 })
             },
             deleteUser(ids){
