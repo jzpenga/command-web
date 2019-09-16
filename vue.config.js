@@ -10,6 +10,9 @@ const name = defaultSettings.title || 'vue Element Admin'; // page title
 const port = 9528; // dev port
 
 module.exports = {
+  publicPath: process.env.NODE_ENV === 'production'
+      ? '/wcommand/'
+      : '/',
   lintOnSave: false,
   devServer:{
     port: port,
