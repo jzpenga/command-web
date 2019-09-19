@@ -1,0 +1,250 @@
+<template>
+
+    <el-card class="form-container card-content" shadow="never">
+        <el-tree :data="treeData"
+                 :props="defaultProps"
+                 default-expand-all
+                 node-key="id"
+                 :expand-on-click-node="false"
+                 @node-click="handleNodeClick">
+            <div class="custom-tree-node" slot-scope="{ node, data }">
+                <span>{{ data.name }}</span>
+                <div class="option">
+                    <el-button type="text" size="mini" @click="() => showEditDialog(node, data, false)">添加子指标</el-button>
+                    <el-button type="text" size="mini" @click="() => showEditDialog(node, data, true)">编辑</el-button>
+                    <el-button type="text" size="mini" @click="() => handleDelete(node, data)">删除</el-button>
+                </div>
+            </div>
+        </el-tree>
+
+        <el-dialog
+                center
+                title="编辑指标"
+                :visible.sync="targetDetailDialogVisible"
+                width="50%"
+                :before-close="handleClose">
+            <el-form :model="target"
+                     ref="targetFrom"
+                     label-width="150px"
+                     size="small">
+                <el-form-item label="指标名称：" prop="name">
+                    <el-input v-model="target.name" class="input-width"></el-input>
+                </el-form-item>
+                <el-form-item label="指标描述：" prop="description">
+                    <el-input v-model="target.description" class="input-width"></el-input>
+                </el-form-item>
+                <el-form-item label="手机链接：" prop="url">
+                    <el-input v-model="target.url" class="input-width"></el-input>
+                </el-form-item>
+                <el-form-item label="pad链接：" prop="padUrl">
+                    <el-input v-model="target.padUrl" class="input-width"></el-input>
+                </el-form-item>
+                <el-form-item label="指标图标：" prop="pic">
+                    <el-upload
+                            class="avatar-uploader"
+                            action="https://jsonplaceholder.typicode.com/posts/"
+                            :show-file-list="false"
+                            :on-success="handleAvatarSuccess"
+                            :before-upload="beforeAvatarUpload">
+                        <img v-if="target.pic" :src="target.pic" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
+            </el-form>
+                <span slot="footer" class="dialog-footer">
+    <el-button @click="targetDetailDialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="onSubmit('targetFrom')">保 存</el-button>
+  </span>
+        </el-dialog>
+    </el-card>
+
+</template>
+
+<script>
+    let id = 1000;
+    import {fetchList,saveTarget,deleteTarget} from "../../api/target";
+
+    const defaultTarget = {
+        id:'',
+        name:'',
+        parentId:0,
+        description:'',
+        url:'',
+        padUrl:'',
+        pic:'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+    };
+    export default {
+        name: "Target",
+        data() {
+            return {
+                target:defaultTarget,
+                targetDetailDialogVisible: false,
+                isEdit:false,
+                treeData: [],
+                defaultProps: {
+                    children: 'child',
+                    label: 'name'
+                }
+            }
+        },
+        created() {
+            this.getList();
+        },
+        methods: {
+            showEditDialog(node, data, isEdit){
+                this.targetDetailDialogVisible = true;
+                this.isEdit = isEdit;
+            },
+            handleDelete(node, data){
+                this.deleteTarget([data.id]);
+            },
+            handleNodeClick(data) {
+                //console.log('handleNodeClick', data);
+            },
+            handleClose(done) {
+                this.$confirm('确认关闭？')
+                    .then(_ => {
+                        done();
+                    })
+                    .catch(_ => {
+                    });
+            },
+            handleAvatarSuccess(res, file) {
+                this.target = {...this.target,pic:URL.createObjectURL(file.raw)}
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPG) {
+                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
+            },
+            getList(){
+                fetchList().then((res) => {
+                    this.treeData = res;
+                })
+            },
+            deleteTarget(ids){
+                this.$confirm('是否要删除该指标吗?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    deleteTarget(ids).then(response=>{
+                        this.getList();
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                    });
+                })
+            },
+            onSubmit(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        this.$confirm('是否提交数据', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            if (this.isEdit) {
+                                saveTarget(this.target).then(response => {
+                                    this.$refs[formName].resetFields();
+                                    this.$message({
+                                        message: '修改成功',
+                                        type: 'success',
+                                        duration: 1000
+                                    });
+                                    this.targetDetailDialogVisible = false;
+                                    this.getList();
+                                });
+                            } else {
+                                saveTarget(this.target).then(response => {
+                                    this.$refs[formName].resetFields();
+                                    this.target = Object.assign({}, defaultTarget);
+                                    this.$message({
+                                        message: '提交成功',
+                                        type: 'success',
+                                        duration: 1000
+                                    });
+                                    this.targetDetailDialogVisible = false;
+                                    this.getList();
+                                });
+                            }
+                        });
+
+                    } else {
+                        this.$message({
+                            message: '验证失败',
+                            type: 'error',
+                            duration: 1000
+                        });
+                        return false;
+                    }
+                });
+            },
+        }
+
+    }
+</script>
+
+<style lang="scss" scoped>
+    .custom-tree-node {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .name-input {
+        -webkit-appearance: none;
+        background-color: #fff;
+        background-image: none;
+        border-radius: 4px;
+        border: 1px solid #dcdfe6;
+        box-sizing: border-box;
+        color: #606266;
+        display: inline-block;
+        font-size: inherit;
+        height: 26px;
+        line-height: 26px;
+        outline: none;
+        padding: 0 15px;
+        transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+        width: 100%;
+    }
+
+    .card-content {
+        height: calc(100vh - 150px);
+        overflow: auto
+    }
+
+    .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+    .avatar-uploader .el-upload:hover {
+        border-color: #409EFF;
+    }
+    .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 178px;
+        height: 178px;
+        line-height: 178px;
+        text-align: center;
+    }
+    .avatar {
+        width: 178px;
+        height: 178px;
+        display: block;
+    }
+</style>

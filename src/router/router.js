@@ -98,6 +98,18 @@ export const  constantRoutes =[
             }
         ]
     },
+    {
+        path: '/targetManager',
+        component: Layout,
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/targetManager'),
+                name: '指标管理',
+                meta: { title: '指标管理', icon: 'role', affix: true }
+            }
+        ]
+    },
   ];
 
 
