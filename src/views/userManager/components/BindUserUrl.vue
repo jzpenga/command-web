@@ -77,6 +77,7 @@
         },
         watch: {
             userId(val) {
+                this.urlData = defaultUrlData;
                 if (this.dataType === 'target'){
                     this.getTargetList();
                 } else if (this.dataType === 'subject') {
