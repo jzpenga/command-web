@@ -12,3 +12,14 @@ export function subjectTree(id) {
   })
 }
 
+
+/**
+ * 根据用户id获取专题
+ * /command/subject/getSubjectListByUserId/{id}
+ */
+export function getSubjectListByUserId(data) {
+  return request({
+    url: `/command/subject/getSubjectListByUserId?userId=${data}`,
+    method: 'get'
+  })
+}

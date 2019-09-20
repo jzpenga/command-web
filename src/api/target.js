@@ -22,6 +22,17 @@ export function getTargetById(data) {
   })
 }
 
+/**
+ * 根据用户id获取指标
+ * /command/target/getTargetListByUserId/{id}
+ */
+export function getTargetListByUserId(data) {
+  return request({
+    url: `/command/target/getTargetListByUserId?userId=${data}`,
+    method: 'get'
+  })
+}
+
 
 
 /**

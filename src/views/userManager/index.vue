@@ -35,6 +35,14 @@
                     <template slot-scope="scope">
                         <el-button size="mini"
                                    type="text"
+                                   @click="handleBindTargetUrl(scope.$index, scope.row)">绑定指标url
+                        </el-button>
+                        <el-button size="mini"
+                                   type="text"
+                                   @click="handleBindSubjectUrl(scope.$index, scope.row)">绑定专题url
+                        </el-button>
+                        <el-button size="mini"
+                                   type="text"
                                    @click="handleUpdate(scope.$index, scope.row)">编辑
                         </el-button>
                         <el-button size="mini"
@@ -57,26 +65,51 @@
                     :total="total">
             </el-pagination>
         </div>
+
+        <el-dialog
+                center
+                title="编辑指标"
+                :visible.sync="bindTargetUrlDialogVisible"
+                width="50%">
+            <bind-user-url v-bind:userId="userId" dataType="target"/>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="bindTargetUrlDialogVisible = false">关闭</el-button>
+            </div>
+        </el-dialog>
+        <el-dialog
+                center
+                title="编辑专题"
+                :visible.sync="bindSubjectUrlDialogVisible"
+                width="50%">
+            <bind-user-url v-bind:userId="userId" dataType="subject"/>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="bindSubjectUrlDialogVisible = false">关闭</el-button>
+            </div>
+        </el-dialog>
     </div>
 
 </template>
 
 <script>
-    import {fetchList,deleteUser} from "../../api/user";
+    import {fetchList, deleteUser} from "../../api/user";
+    import BindUserUrl from './components/BindUserUrl';
 
     const defaultListQuery = {
         pageNum: 1,
         pageSize: 5,
         name: null,
         type: null,
-        endTime:null
+        endTime: null
     };
     export default {
         name: "index",
-        data:function(){
-            return{
+        data: function () {
+            return {
+                userId:'',
+                bindTargetUrlDialogVisible:false,
+                bindSubjectUrlDialogVisible:false,
                 listQuery: Object.assign({}, defaultListQuery),
-                dialogVisible:false,
+                dialogVisible: false,
                 list: null,
                 total: null,
                 listLoading: false,
@@ -89,18 +122,29 @@
                 ]
             }
         },
-        methods:{
-            handleSelectionChange(val){
+        components:{
+            BindUserUrl
+        },
+        methods: {
+            handleBindTargetUrl(index, row) {
+                this.bindTargetUrlDialogVisible = true;
+                this.userId = row.id;
+            },
+            handleBindSubjectUrl(index, row) {
+                this.bindSubjectUrlDialogVisible = true;
+                this.userId = row.id;
+            },
+            handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
-            handleDelete(index,row){
+            handleDelete(index, row) {
                 this.deleteUser([row.id]);
 
             },
-            handleAdd(){
+            handleAdd() {
                 this.$router.push({path: '/userManager/addUser'})
             },
-            handleUpdate(index,row){
+            handleUpdate(index, row) {
                 this.$router.push({path: '/userManager/editUser', query: {id: row.id}})
             },
             handleSizeChange(val) {
@@ -117,18 +161,18 @@
                 fetchList(this.listQuery).then(response => {
                     this.listLoading = false;
                     console.log('getList', response);
-                    const {content,totalElements} = response;
+                    const {content, totalElements} = response;
                     this.list = content;
                     this.total = Number.parseInt(totalElements);
                 })
             },
-            deleteUser(ids){
+            deleteUser(ids) {
                 this.$confirm('是否要删除该用户吗?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    deleteUser(ids).then(response=>{
+                    deleteUser(ids).then(response => {
                         this.getList();
                         this.$message({
                             type: 'success',
