@@ -3,8 +3,10 @@
     <el-card class="form-container card-content" shadow="never">
         <el-tree :data="treeData"
                  :props="defaultProps"
-                 default-expand-all
                  node-key="id"
+                 @node-expand="nodeExpand"
+                 @node-collapse="nodeCollapse"
+                 :default-expanded-keys="expandKeys"
                  :expand-on-click-node="false"
                  @node-click="handleNodeClick">
             <div class="custom-tree-node" slot-scope="{ node, data }">
@@ -31,7 +33,7 @@
                     <el-input v-model="target.name" class="input-width"></el-input>
                 </el-form-item>
                 <el-form-item label="指标描述：" prop="description">
-                    <el-input v-model="target.description" class="input-width"></el-input>
+                    <el-input type="textarea" v-model="target.description" class="input-width"></el-input>
                 </el-form-item>
                 <el-form-item label="手机链接：" prop="url">
                     <el-input v-model="target.url" class="input-width"></el-input>
@@ -62,10 +64,9 @@
 
 <script>
     let id = 1000;
-    import {fetchList,saveTarget,deleteTarget} from "../../api/target";
+    import {fetchList,saveTarget,deleteTarget,getTargetById} from "../../api/target";
 
     const defaultTarget = {
-        id:'',
         name:'',
         parentId:0,
         description:'',
@@ -77,6 +78,7 @@
         name: "Target",
         data() {
             return {
+                expandKeys:[],
                 target:defaultTarget,
                 targetDetailDialogVisible: false,
                 isEdit:false,
@@ -91,9 +93,25 @@
             this.getList();
         },
         methods: {
+            nodeExpand(data){
+                this.expandKeys.push(data.id);
+            },
+            nodeCollapse(data){
+                const index = this.expandKeys.indexOf((it)=>it.id === data.id);
+                this.expandKeys.splice(index,1)
+            },
             showEditDialog(node, data, isEdit){
-                this.targetDetailDialogVisible = true;
                 this.isEdit = isEdit;
+                if (this.isEdit){
+                    getTargetById(data.id).then((res)=>{
+                        this.target = res;
+                        this.targetDetailDialogVisible = true;
+                    })
+                } else {
+                    this.targetDetailDialogVisible = true;
+                    this.target = {...defaultTarget,parentId:data.id}
+                }
+
             },
             handleDelete(node, data){
                 this.deleteTarget([data.id]);
