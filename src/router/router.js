@@ -110,6 +110,18 @@ export const  constantRoutes =[
             }
         ]
     },
+    {
+        path: '/subjectManager',
+        component: Layout,
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/subjectManager'),
+                name: '专题管理',
+                meta: { title: '专题管理', icon: 'role', affix: true }
+            }
+        ]
+    },
   ];
 
 
