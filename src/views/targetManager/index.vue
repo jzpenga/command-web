@@ -44,11 +44,11 @@
                 <el-form-item label="指标图标：" prop="pic">
                     <el-upload
                             class="avatar-uploader"
-                            action="https://jsonplaceholder.typicode.com/posts/"
+                            :action="baseUrl+'/command/picture'"
                             :show-file-list="false"
                             :on-success="handleAvatarSuccess"
                             :before-upload="beforeAvatarUpload">
-                        <img v-if="target.pic" :src="target.pic" class="avatar">
+                        <img v-if="target.pic" :src="baseUrl+target.pic" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
@@ -65,6 +65,7 @@
 <script>
     let id = 1000;
     import {fetchList,saveTarget,deleteTarget,getTargetById} from "../../api/target";
+    import {config} from "../../utils/config";
 
     const defaultTarget = {
         name:'',
@@ -72,12 +73,13 @@
         description:'',
         url:'',
         padUrl:'',
-        pic:'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+        pic:''
     };
     export default {
         name: "Target",
         data() {
             return {
+                baseUrl:config.baseUrl,
                 expandKeys:[],
                 target:defaultTarget,
                 targetDetailDialogVisible: false,
@@ -128,17 +130,17 @@
                     });
             },
             handleAvatarSuccess(res, file) {
-                this.target = {...this.target,pic:URL.createObjectURL(file.raw)}
+                this.target = {...this.target,pic:res.url}
             },
             beforeAvatarUpload(file) {
-                const isJPG = file.type === 'image/jpeg';
-                const isLt2M = file.size / 1024 / 1024 < 2;
+                const isJPG = file.type === 'image/jpeg' || file.type === 'image/jpg' || file.type === 'image/png';
+                const isLt2M = file.size / 1024 / 1024 < 0.02;
 
                 if (!isJPG) {
-                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                    this.$message.error('上传图片只能是 JPG 、JPEG、PNG 格式!');
                 }
                 if (!isLt2M) {
-                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                    this.$message.error('上传图片大小不能超过 20KB!');
                 }
                 return isJPG && isLt2M;
             },
