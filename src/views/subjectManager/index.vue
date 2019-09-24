@@ -64,7 +64,7 @@
 
 <script>
     let id = 1000;
-    import {fetchList,saveTarget,deleteTarget,getTargetById} from "../../api/target";
+    import {fetchList,saveSubject,deleteSubject,getSubjectById} from "../../api/suject";
     import {config} from "../../utils/config";
 
     const defaultTarget = {
@@ -76,7 +76,7 @@
         pic:''
     };
     export default {
-        name: "Target",
+        name: "Subject",
         data() {
             return {
                 baseUrl:config.baseUrl,
@@ -105,7 +105,7 @@
             showEditDialog(node, data, isEdit){
                 this.isEdit = isEdit;
                 if (this.isEdit){
-                    getTargetById(data.id).then((res)=>{
+                    getSubjectById(data.id).then((res)=>{
                         this.target = res;
                         this.targetDetailDialogVisible = true;
                     })
@@ -155,7 +155,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    deleteTarget(ids).then(response=>{
+                    deleteSubject(ids).then(response=>{
                         this.getList();
                         this.$message({
                             type: 'success',
@@ -173,7 +173,7 @@
                             type: 'warning'
                         }).then(() => {
                             if (this.isEdit) {
-                                saveTarget(this.target).then(response => {
+                                saveSubject(this.target).then(response => {
                                     this.$refs[formName].resetFields();
                                     this.$message({
                                         message: '修改成功',
@@ -184,7 +184,7 @@
                                     this.getList();
                                 });
                             } else {
-                                saveTarget(this.target).then(response => {
+                                saveSubject(this.target).then(response => {
                                     this.$refs[formName].resetFields();
                                     this.target = Object.assign({}, defaultTarget);
                                     this.$message({

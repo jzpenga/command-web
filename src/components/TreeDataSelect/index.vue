@@ -136,7 +136,7 @@
                 this.loadOptionalData(item.id);
             },
             handleTreeClick(data) {
-                if (data.child) {
+                if (data.child && data.child.length>0) {
                     return;
                 }
                 this.optionalStack = [];
