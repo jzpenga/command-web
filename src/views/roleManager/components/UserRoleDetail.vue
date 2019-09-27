@@ -27,6 +27,7 @@
             <el-form-item>
                 <el-button type="primary" @click="onSubmit('userRoleFrom')">提交</el-button>
                 <el-button v-if="!isEdit" @click="resetForm('userRoleFrom')">重置</el-button>
+                <el-button @click="$router.back()">返回</el-button>
             </el-form-item>
         </el-form>
 
