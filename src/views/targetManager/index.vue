@@ -1,6 +1,9 @@
 <template>
 
     <el-card class="form-container card-content" shadow="never">
+        <div style="text-align: right">
+            <el-button type="text" size="mini" @click="() => showAddCategoryDialog()">添加一级分类</el-button>
+        </div>
         <el-tree :data="treeData"
                  :props="defaultProps"
                  node-key="id"
@@ -12,8 +15,9 @@
             <div class="custom-tree-node" slot-scope="{ node, data }">
                 <span>{{ data.name }}</span>
                 <div class="option">
-                    <el-button type="text" size="mini" @click="() => showEditDialog(node, data, false)">添加子指标</el-button>
-                    <el-button type="text" size="mini" @click="() => showEditDialog(node, data, true)">编辑</el-button>
+                    <el-button v-if="isCategoryItem(data)" type="text" size="mini" @click="() => showEditDialog(node, data, false,true)">添加子分类</el-button>
+                    <el-button v-if="!isCategoryItem(data)" type="text" size="mini" @click="() => showEditDialog(node, data, false,false)">添加子指标</el-button>
+                    <el-button type="text" size="mini" @click="() => showEditDialog(node, data, true,isCategoryItem(data))">编辑</el-button>
                     <el-button type="text" size="mini" @click="() => handleDelete(node, data)">删除</el-button>
                 </div>
             </div>
@@ -21,7 +25,7 @@
 
         <el-dialog
                 center
-                title="编辑指标"
+                title="编辑"
                 :visible.sync="targetDetailDialogVisible"
                 width="50%"
                 :before-close="handleClose">
@@ -29,19 +33,19 @@
                      ref="targetFrom"
                      label-width="150px"
                      size="small">
-                <el-form-item label="指标名称：" prop="name">
+                <el-form-item label="名称：" prop="name">
                     <el-input v-model="target.name" class="input-width"></el-input>
                 </el-form-item>
-                <el-form-item label="指标描述：" prop="description">
+                <el-form-item v-if="!isEditCategory" label="描述：" prop="description">
                     <el-input type="textarea" v-model="target.description" class="input-width"></el-input>
                 </el-form-item>
-                <el-form-item label="手机链接：" prop="url">
+                <el-form-item v-if="!isEditCategory" label="手机链接：" prop="url">
                     <el-input v-model="target.url" class="input-width"></el-input>
                 </el-form-item>
-                <el-form-item label="pad链接：" prop="padUrl">
+                <el-form-item v-if="!isEditCategory" label="pad链接：" prop="padUrl">
                     <el-input v-model="target.padUrl" class="input-width"></el-input>
                 </el-form-item>
-                <el-form-item label="指标图标：" prop="pic">
+                <el-form-item v-if="!isEditCategory" label="图标：" prop="pic">
                     <el-upload
                             class="avatar-uploader"
                             :action="baseUrl+'/command/picture'"
@@ -84,6 +88,7 @@
                 target:defaultTarget,
                 targetDetailDialogVisible: false,
                 isEdit:false,
+                isEditCategory:false,
                 treeData: [],
                 defaultProps: {
                     children: 'child',
@@ -94,6 +99,14 @@
         created() {
             this.getList();
         },
+        computed:{
+            isCategoryItem(){
+                return function(data){
+                    let path = data.path;
+                    return path.split("-").length<2
+                };
+            },
+        },
         methods: {
             nodeExpand(data){
                 this.expandKeys.push(data.id);
@@ -102,8 +115,15 @@
                 const index = this.expandKeys.indexOf((it)=>it.id === data.id);
                 this.expandKeys.splice(index,1)
             },
-            showEditDialog(node, data, isEdit){
+            showAddCategoryDialog(){
+                this.showEditDialog(null,{id:0},false,true);
+            },
+            showEditDialog(node, data, isEdit,isEditCategory){
                 this.isEdit = isEdit;
+                this.isEditCategory = isEditCategory;
+                if (isEdit && data.path.split("-").length === 2){
+                    this.isEditCategory = true;
+                }
                 if (this.isEdit){
                     getTargetById(data.id).then((res)=>{
                         this.target = res;
