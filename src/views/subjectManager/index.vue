@@ -32,6 +32,7 @@
             <el-form :model="target"
                      ref="targetFrom"
                      label-width="150px"
+                     style="max-height: 500px;overflow: auto"
                      size="small">
                 <el-form-item label="名称：" prop="name">
                     <el-input v-model="target.name" class="input-width"></el-input>
@@ -45,7 +46,7 @@
                 <el-form-item v-if="!isEditCategory" label="研制单位：" prop="dutyDept">
                     <el-input type="textarea" v-model="target.dutyDept" class="input-width"></el-input>
                 </el-form-item>
-                <el-form-item label="发布时间：" >
+                <el-form-item v-if="!isEditCategory" label="发布时间：" >
                     <el-col :span="6">
                         <el-form-item prop="date1">
                             <el-date-picker type="date"
