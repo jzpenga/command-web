@@ -24,6 +24,10 @@
                 <el-button type="primary" @click="deptDialogVisible = true">选择部门</el-button>
                 <span>  {{user.departmentName}}</span>
             </el-form-item>
+            <el-form-item label="区域：" prop="areaName">
+                <el-button type="primary" @click="areaDialogVisible = true">选择区域</el-button>
+                <span>  {{user.areaName}}</span>
+            </el-form-item>
             <el-form-item label="绑定指标：" prop="targetIds">
                 <el-button type="primary" @click="targetDialogVisible = true">绑定指标</el-button>
                 <span>（已选{{user.targetDefIds.length}}个指标）</span>
@@ -99,6 +103,28 @@
         </el-dialog>
         <el-dialog
                 center
+                title="选择区域"
+                :visible.sync="areaDialogVisible"
+                width="50%"
+                :before-close="handleClose">
+            <el-tree
+                    :data="areaTreeData"
+                    ref="areaTree"
+                    show-checkbox
+                    node-key="id"
+                    check-strictly
+                    @check="checksArea"
+                    default-expand-all
+                    :default-checked-keys="areaChecked"
+                    :props="defaultDeptTreeProps">
+            </el-tree>
+            <span slot="footer" class="dialog-footer">
+    <el-button @click="areaDialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="confirmAreaBind()">确 定</el-button>
+  </span>
+        </el-dialog>
+        <el-dialog
+                center
                 title="绑定角色"
                 :visible.sync="roleDialogVisible"
                 width="50%"
@@ -118,8 +144,11 @@
     import TreeDataSelect from '../../../components/TreeDataSelect'
     import {getUserById, saveUser} from "../../../api/user";
     import * as org from "../../../api/organiz";
+    import * as area from "../../../api/area";
 
     const defaultUser = {
+        areaId:'',
+        areaName:'',
         "departmentId": "",
         "departmentName": "",
         deptName: "",
@@ -152,6 +181,9 @@
                 deptTreeData: [],
                 deptChecked: [],
                 deptDialogVisible: false,
+                areaTreeData: [],
+                areaChecked: [],
+                areaDialogVisible: false,
                 targetDialogVisible: false,
                 subjectDialogVisible: false,
                 roleDialogVisible: false,
@@ -192,10 +224,16 @@
             org.fetchList().then((res) => {
                 this.deptTreeData = res;
             })
+            area.fetchList().then((res) => {
+                this.areaTreeData = res;
+            })
         },
         methods: {
             checks(data){
                 this.$refs.deptTree.setCheckedKeys([data.id],true);
+            },
+            checksArea(data){
+                this.$refs.areaTree.setCheckedKeys([data.id],true);
             },
             confirmDeptBind() {
                 let deptId = this.$refs.deptTree.getCheckedKeys();
@@ -207,6 +245,17 @@
 
                 }
                 this.deptDialogVisible = false;
+            },
+            confirmAreaBind() {
+                let areaId = this.$refs.areaTree.getCheckedKeys();
+                let areaName = this.$refs.areaTree.getCheckedNodes();
+                if (areaId && areaId.length > 0) {
+                    this.user = {...this.user, areaId: areaId[0], areaName: areaName[0].name};
+                } else {
+                    this.user = {...this.user, areaId: '', areaName: ''};
+
+                }
+                this.areaDialogVisible = false;
             },
             confirmSubjectBind() {
                 this.user = {...this.user, subjectIds: [...this.tempSubjectIds]};

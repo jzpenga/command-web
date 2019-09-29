@@ -122,6 +122,18 @@ export const  constantRoutes =[
             }
         ]
     },
+    {
+        path: '/areaManager',
+        component: Layout,
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/areaManager'),
+                name: '区域管理',
+                meta: { title: '区域管理', icon: 'role', affix: true }
+            }
+        ]
+    },
   ];
 
 
