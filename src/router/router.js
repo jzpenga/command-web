@@ -134,6 +134,31 @@ export const  constantRoutes =[
             }
         ]
     },
+    {
+        path: '/advertise',
+        component: Layout,
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/advertise'),
+                name: '轮播图管理',
+                meta: { title: '轮播图管理', icon: 'role', affix: true }
+            },{
+                path: 'addAdvertise',
+                name: 'addHomeAdvertise',
+                component: () => import('@/views/advertise/add'),
+                meta: {title: '添加广告', icon: 'sms-ad'},
+                hidden:true
+            },
+            {
+                path: 'updateAdvertise',
+                name: 'updateHomeAdvertise',
+                component: () => import('@/views/advertise/update'),
+                meta: {title: '编辑广告', icon: 'sms-ad'},
+                hidden:true
+            }
+        ]
+    }
   ];
 
 
