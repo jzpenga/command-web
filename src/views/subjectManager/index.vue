@@ -39,6 +39,32 @@
                 <el-form-item v-if="!isEditCategory" label="描述：" prop="description">
                     <el-input type="textarea" v-model="target.description" class="input-width"></el-input>
                 </el-form-item>
+                <el-form-item v-if="!isEditCategory" label="负责部门：" prop="buildUnit">
+                    <el-input type="textarea" v-model="target.buildUnit" class="input-width"></el-input>
+                </el-form-item>
+                <el-form-item v-if="!isEditCategory" label="研制单位：" prop="dutyDept">
+                    <el-input type="textarea" v-model="target.dutyDept" class="input-width"></el-input>
+                </el-form-item>
+                <el-form-item label="发布时间：" >
+                    <el-col :span="6">
+                        <el-form-item prop="date1">
+                            <el-date-picker type="date"
+                                            value-format="yyyy/MM/dd"
+                                            placeholder="选择日期"
+                                            v-model="target.date1" style="width: 100%;"></el-date-picker>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="1"> </el-col>
+                    <el-col :span="6">
+                        <el-form-item prop="date2">
+                            <el-time-picker placeholder="选择时间"
+                                            value-format="HH:mm:ss"
+                                            v-model="target.date2"
+                                            style="width: 100%;"></el-time-picker>
+                        </el-form-item>
+                    </el-col>
+                </el-form-item>
+
                 <el-form-item v-if="!isEditCategory" label="手机链接：" prop="url">
                     <el-input v-model="target.url" class="input-width"></el-input>
                 </el-form-item>
@@ -70,6 +96,8 @@
     let id = 1000;
     import {fetchList,saveSubject,deleteSubject,getSubjectById} from "../../api/suject";
     import {config} from "../../utils/config";
+    import {formatDate} from '@/utils/date';
+
 
     const defaultTarget = {
         name:'',
@@ -77,7 +105,12 @@
         description:'',
         url:'',
         padUrl:'',
-        pic:''
+        pic:'',
+        buildUnit:'',
+        dutyDept:'',
+        publishTime:'',
+        date1:'',
+        date2:''
     };
     export default {
         name: "Subject",
@@ -126,7 +159,13 @@
                 }
                 if (this.isEdit){
                     getSubjectById(data.id).then((res)=>{
-                        this.target = res;
+                        let date1 = '';
+                        let date2 = '';
+                        if (res.publishTime) {
+                            date1 = res.publishTime.split(' ')[0];
+                            date2 = res.publishTime.split(' ')[1];
+                        }
+                        this.target = {...res,date1:date1,date2:date2};
                         this.targetDetailDialogVisible = true;
                     })
                 } else {
@@ -193,7 +232,8 @@
                             type: 'warning'
                         }).then(() => {
                             if (this.isEdit) {
-                                saveSubject(this.target).then(response => {
+                                console.log(this.target)
+                                saveSubject({...this.target,publishTime: this.target.date1+' '+this.target.date2}).then(response => {
                                     this.$refs[formName].resetFields();
                                     this.$message({
                                         message: '修改成功',
@@ -204,7 +244,7 @@
                                     this.getList();
                                 });
                             } else {
-                                saveSubject(this.target).then(response => {
+                                saveSubject({...this.target,publishTime: this.target.date1+' '+this.target.date2}).then(response => {
                                     this.$refs[formName].resetFields();
                                     this.target = Object.assign({}, defaultTarget);
                                     this.$message({
