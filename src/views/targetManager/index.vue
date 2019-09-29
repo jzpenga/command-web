@@ -31,6 +31,7 @@
                 :before-close="handleClose">
             <el-form :model="target"
                      ref="targetFrom"
+                     style="max-height: 500px;overflow: auto"
                      label-width="150px"
                      size="small">
                 <el-form-item label="名称：" prop="name">
@@ -38,6 +39,24 @@
                 </el-form-item>
                 <el-form-item v-if="!isEditCategory" label="描述：" prop="description">
                     <el-input type="textarea" v-model="target.description" class="input-width"></el-input>
+                </el-form-item>
+                <el-form-item v-if="!isEditCategory" label="数值类别：" prop="meterType">
+                    <el-input v-model="target.meterType" class="input-width"></el-input>
+                </el-form-item>
+                <el-form-item v-if="!isEditCategory" label="计量单位：" prop="meterUnit">
+                    <el-input v-model="target.meterUnit" class="input-width"></el-input>
+                </el-form-item>
+                <el-form-item v-if="!isEditCategory" label="表名：" prop="tableName">
+                    <el-input v-model="target.tableName" class="input-width"></el-input>
+                </el-form-item>
+                <el-form-item v-if="!isEditCategory" label="分类编码：" prop="typeCode">
+                    <el-input v-model="target.typeCode" class="input-width"></el-input>
+                </el-form-item>
+                <el-form-item v-if="!isEditCategory" label="指标编号：" prop="targetNo">
+                    <el-input  v-model="target.targetNo" class="input-width"></el-input>
+                </el-form-item>
+                <el-form-item v-if="!isEditCategory" label="分类名称：" prop="typeName">
+                    <el-input  v-model="target.typeName" class="input-width"></el-input>
                 </el-form-item>
                 <el-form-item v-if="!isEditCategory" label="手机链接：" prop="url">
                     <el-input v-model="target.url" class="input-width"></el-input>
@@ -77,7 +96,13 @@
         description:'',
         url:'',
         padUrl:'',
-        pic:''
+        pic:'',
+        meterType:'',
+        meterUnit:'',
+        tableName:'',
+        typeCode:'',
+        targetNo:'',
+        typeName:''
     };
     export default {
         name: "Target",
