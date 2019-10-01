@@ -217,6 +217,9 @@
                     if (response.departmentId) {
                         this.deptChecked = [response.departmentId];
                     }
+                    if (response.areaId) {
+                        this.areaChecked = [response.areaId];
+                    }
                 });
             } else {
                 this.user = Object.assign({}, defaultUser);
