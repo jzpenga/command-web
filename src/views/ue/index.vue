@@ -40,7 +40,7 @@
                         // window.document.getElementById("_password").val("cdsf@119");
                         // window.document.getElementById("cas_submit").click();
                         const iframeNode = window.frames["ueIframe"].document;
-                        console.log(self.getDom(iframeNode));
+                        console.log(iframeNode);
                     };
                 }
             })
