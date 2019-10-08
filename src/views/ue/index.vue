@@ -38,8 +38,8 @@
 
                         const d = iframe.contentWindow.document;
                         console.log(d.getElementById("username"));
-                        d.getElementById("username").val("admin");
-                        d.getElementById("_password").val("cdsf@119");
+                        d.getElementById("username").value = "admin";
+                        d.getElementById("_password").value = "cdsf@119";
                         d.getElementById("cas_submit").click();
                         //const iframeNode = window.frames["ueIframe"].document;
                     };
