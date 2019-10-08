@@ -35,12 +35,13 @@
                     });
                 } else {
                     iframe.onload = function() {
-                        // console.log(window.document.getElementById("username"));
-                        // window.document.getElementById("username").value("admin");
-                        // window.document.getElementById("_password").val("cdsf@119");
-                        // window.document.getElementById("cas_submit").click();
+
+                        const d = iframe.contentWindow.document;
+                        console.log(d.getElementById("username"));
+                        d.getElementById("username").value("admin");
+                        d.getElementById("_password").val("cdsf@119");
+                        d.getElementById("cas_submit").click();
                         //const iframeNode = window.frames["ueIframe"].document;
-                        console.log(iframe.contentWindow.document.getElementById("username"));
                     };
                 }
             })
