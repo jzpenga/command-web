@@ -39,8 +39,8 @@
                         // window.document.getElementById("username").value("admin");
                         // window.document.getElementById("_password").val("cdsf@119");
                         // window.document.getElementById("cas_submit").click();
-                        const iframeNode = window.frames["ueIframe"].document;
-                        console.log(iframeNode);
+                        //const iframeNode = window.frames["ueIframe"].document;
+                        console.log(iframe.contentWindow.document.getElementById("username"));
                     };
                 }
             })
