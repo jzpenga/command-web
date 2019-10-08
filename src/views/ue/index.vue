@@ -34,10 +34,10 @@
                     });
                 } else {
                     iframe.onload = function() {
-                        iframe.getElementById("username").value("admin");
-                        console.log(iframe.getElementById("username"));
-                        iframe.getElementById("_password").val("cdsf@119");
-                        iframe.getElementById("cas_submit").click();
+                        window.document.getElementById("username").value("admin");
+                        console.log(window.document.getElementById("username"));
+                        window.document.getElementById("_password").val("cdsf@119");
+                        window.document.getElementById("cas_submit").click();
                     };
                 }
             })
