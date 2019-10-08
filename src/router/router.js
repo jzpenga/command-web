@@ -158,7 +158,19 @@ export const  constantRoutes =[
                 hidden:true
             }
         ]
-    }
+    },
+    {
+        path: '/ue',
+        component: Layout,
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/ue'),
+                name: '数据可视化设计',
+                meta: { title: '数据可视化设计', icon: 'role', affix: true }
+            }
+        ]
+    },
   ];
 
 
