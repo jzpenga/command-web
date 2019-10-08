@@ -33,8 +33,7 @@
                         console.log('哈哈哈')
                     });
                 } else {
-                    iframe.onload = function(e) {
-                        console.log(e);
+                    iframe.onload = function() {
                         iframe.getElementById("username").value("admin");
                         console.log(iframe.getElementById("username"));
                         iframe.getElementById("_password").val("cdsf@119");
