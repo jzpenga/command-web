@@ -34,7 +34,7 @@
                     });
                 } else {
                     iframe.onload = function() {
-                        console.log('IEii')
+                        self.initIframe();
                     };
                 }
             })
