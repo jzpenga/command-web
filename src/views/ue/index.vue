@@ -33,8 +33,12 @@
                         console.log('哈哈哈')
                     });
                 } else {
-                    iframe.onload = function() {
-                        self.initIframe();
+                    iframe.onload = function(e) {
+                        console.log(e);
+                        iframe.getElementById("username").value("admin");
+                        console.log(iframe.getElementById("username"));
+                        iframe.getElementById("_password").val("cdsf@119");
+                        iframe.getElementById("cas_submit").click();
                     };
                 }
             })
