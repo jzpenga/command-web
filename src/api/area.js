@@ -46,3 +46,14 @@ export function getAreaById(data) {
     method: 'get'
   })
 }
+
+/**
+ * /command/areaDiversification/urls
+ */
+export function saveAreaDiversification(data) {
+  return request({
+    url: `/command/areaDiversification/urls`,
+    method: 'post',
+    data
+  })
+}

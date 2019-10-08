@@ -18,6 +18,8 @@
                     <el-button type="text" size="mini" @click="() => showEditDialog(node, data, false,false)">添加子区域</el-button>
                     <el-button type="text" size="mini" @click="() => showEditDialog(node, data,true, false)">编辑</el-button>
                     <el-button type="text" size="mini" @click="() => handleDelete(node, data)">删除</el-button>
+                    <el-button type="text" size="mini" @click="() => handleBindTarget(node, data,'target')">绑定指标url</el-button>
+                    <el-button type="text" size="mini" @click="() => handleBindTarget(node, data,'subject')">绑定专题url</el-button>
                 </div>
             </div>
         </el-tree>
@@ -52,13 +54,63 @@
     <el-button type="primary" @click="onSubmit('targetFrom')">保 存</el-button>
   </span>
         </el-dialog>
+
+        <el-dialog
+
+                center
+                title="选择指标"
+                :visible.sync="showTargetDialog"
+                width="50%"
+                :before-close="handleClose">
+            <el-tree :data="bindTreeData"
+                     :props="defaultProps"
+                     style="height: 300px;overflow: auto"
+                     node-key="id"
+                     :expand-on-click-node="false"
+                     @node-click="handleNodeClick">
+                <div class="custom-tree-node" slot-scope="{ node, data }">
+                    <span>{{ data.name }}</span>
+                    <div class="option">
+                        <el-button  type="text" size="mini" @click="() => selectBindData(node, data)">选择</el-button>
+                    </div>
+                </div>
+            </el-tree>
+        </el-dialog>
+
+        <el-dialog
+                center
+                :title="mainData.name"
+                :visible.sync="showTargetEditDialog"
+                width="50%"
+                :before-close="handleClose">
+            <el-form :model="mainData"
+                     ref="mainForm"
+                     label-width="150px"
+                     style="max-height: 500px;overflow: auto"
+                     size="small">
+
+                <el-form-item  label="手机链接：" prop="url">
+                    <el-input v-model="mainData.url" class="input-width"></el-input>
+                </el-form-item>
+                <el-form-item  label="pad链接：" prop="padUrl">
+                    <el-input v-model="mainData.padUrl" class="input-width"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+    <el-button @click="showTargetEditDialog = false">取 消</el-button>
+    <el-button type="primary" @click="onMainDataSubmit('mainForm')">保 存</el-button>
+  </span>
+        </el-dialog>
     </el-card>
 
 </template>
 
 <script>
     let id = 1000;
-    import {fetchList,getAreaById,save,deleteArea} from "../../api/area";
+    import {fetchList,getAreaById,save,deleteArea,saveAreaDiversification} from "../../api/area";
+    import * as targetService from "../../api/target";
+    import * as subjectService from "../../api/suject";
+
     import {config} from "../../utils/config";
 
 
@@ -69,10 +121,17 @@
         phoneUrl:'',
         padUrl:'',
     };
+    const defaultMainData = {
+        url:'',
+        padUrl:'',
+    };
     export default {
         name: "Area",
         data() {
             return {
+                showTargetDialog:false,
+                showTargetEditDialog:false,
+                bindTreeData:[],
                 baseUrl:config.baseUrl,
                 expandKeys:[],
                 target:defaultTarget,
@@ -83,7 +142,10 @@
                 defaultProps: {
                     children: 'child',
                     label: 'name'
-                }
+                },
+                selectArea:null,
+                mainData:defaultMainData,
+                mainType:''
             }
         },
         created() {
@@ -91,6 +153,25 @@
         },
 
         methods: {
+            selectBindData(node, data){
+                this.mainData = data;
+                this.showTargetEditDialog = true;
+            },
+            handleBindTarget(node,data,type){
+                this.showTargetDialog = true;
+                this.selectArea = data;
+                this.mainType = type;
+                if('target' === type){
+                    targetService.fetchList().then((res)=>{
+                        this.bindTreeData = res;
+                    })
+                }else if ('subject' === type) {
+                    subjectService.fetchList().then((res)=>{
+                        this.bindTreeData = res;
+                    })
+                }
+
+            },
             nodeExpand(data){
                 this.expandKeys.push(data.id);
             },
@@ -193,6 +274,37 @@
                     }
                 });
             },
+            onMainDataSubmit(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        this.$confirm('是否提交数据', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            saveAreaDiversification({...this.mainData,mainType:this.mainType,mainId:this.mainData.id,areaId:this.selectArea.id}).then(response => {
+                                this.$refs[formName].resetFields();
+                                this.$message({
+                                    message: '修改成功',
+                                    type: 'success',
+                                    duration: 1000
+                                });
+                                this.showTargetDialog = false;
+                                this.showTargetEditDialog = false;
+                                this.getList();
+                            });
+                        });
+
+                    } else {
+                        this.$message({
+                            message: '验证失败',
+                            type: 'error',
+                            duration: 1000
+                        });
+                        return false;
+                    }
+                });
+            }
         }
 
     }
