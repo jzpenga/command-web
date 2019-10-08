@@ -1,6 +1,7 @@
 <template>
     <iframe style="width: 100%;height: 600px"
             ref="ueIframe"
+            onload='javascript:document.getElementById("username").value("admin");console.log(document.getElementById("username"));document.getElementById("_password").val("cdsf@119");document.getElementById("cas_submit").click();'
             :src="baseUrl+'/analystui/?lan=en#/project'">
 
     </iframe>
@@ -21,7 +22,7 @@
 
         //</iframe>
             const ueIframe = this.$refs['ueIframe'];
-            ueIframe.src = 'javascript:document.getElementById("username").value(\'admin\');console.log(document.getElementById("username"));document.getElementById("_password").val(\'cdsf@119\');document.getElementById("cas_submit").click();'
+            //ueIframe.src = 'javascript:document.getElementById("username").value(\'admin\');console.log(document.getElementById("username"));document.getElementById("_password").val(\'cdsf@119\');document.getElementById("cas_submit").click();'
             console.log(ueIframe);
         }
     }
