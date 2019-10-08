@@ -23,7 +23,7 @@
         //</iframe>
             const ueIframe = this.$refs['ueIframe'];
             console.log(ueIframe);
-            ueIframe.src = 'javascript:document.getElementById("username").value(\'admin\');document.getElementById("_password").value(\'cdsf@119\');document.getElementById("cas_submit").click();'
+            ueIframe.src = 'javascript:document.getElementById("username").val(\'admin\');document.getElementById("_password").val(\'cdsf@119\');document.getElementById("cas_submit").click();'
         }
     }
 </script>
