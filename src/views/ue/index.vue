@@ -28,16 +28,19 @@
             const self = this
             this.$nextTick(() =>{
                 const iframe = document.querySelector('#ueIframe');
+                console.log(iframe);
                 if (iframe.attachEvent) {
                     iframe.attachEvent("onload", function() {
                         console.log('哈哈哈')
                     });
                 } else {
                     iframe.onload = function() {
-                        window.document.getElementById("username").value("admin");
-                        console.log(window.document.getElementById("username"));
-                        window.document.getElementById("_password").val("cdsf@119");
-                        window.document.getElementById("cas_submit").click();
+                        // console.log(window.document.getElementById("username"));
+                        // window.document.getElementById("username").value("admin");
+                        // window.document.getElementById("_password").val("cdsf@119");
+                        // window.document.getElementById("cas_submit").click();
+                        const iframeNode = window.frames["ueIframe"].document;
+                        console.log(self.getDom(iframeNode));
                     };
                 }
             })
