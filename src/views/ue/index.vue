@@ -3,7 +3,7 @@
             ref="ueIframe"
             id="ueIframe"
             @onload="initIframe"
-            :src="baseUrl+'/analystui/?lan=en#/project'">
+            :src="baseUrl+'/analystui/?lan=zh#/project'">
 
     </iframe>
 </template>
