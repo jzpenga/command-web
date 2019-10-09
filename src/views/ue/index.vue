@@ -1,5 +1,5 @@
 <template>
-    <iframe style="width: 100%;height: 600px"
+    <iframe style="width: 100%;height: calc(100vh - 50px)"
             ref="ueIframe"
             id="ueIframe"
             @onload="initIframe"
