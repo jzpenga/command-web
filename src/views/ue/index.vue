@@ -36,11 +36,11 @@
                 } else {
                     iframe.onload = function() {
 
-                        const d = iframe.contentWindow.document;
-                        console.log(d.getElementById("username"));
-                        d.getElementById("username").value = "admin";
-                        d.getElementById("_password").value = "cdsf@119";
-                        d.getElementById("cas_submit").click();
+                        // const d = iframe.contentWindow.document;
+                        // console.log(d.getElementById("username"));
+                        // d.getElementById("username").value = "admin";
+                        // d.getElementById("_password").value = "cdsf@119";
+                        // d.getElementById("cas_submit").click();
                         //const iframeNode = window.frames["ueIframe"].document;
                     };
                 }
@@ -49,10 +49,10 @@
         },
         methods:{
             initIframe(){
-                document.getElementById("username").value("admin");
-                console.log(document.getElementById("username"));
-                document.getElementById("_password").val("cdsf@119");
-                document.getElementById("cas_submit").click();
+                // document.getElementById("username").value("admin");
+                // console.log(document.getElementById("username"));
+                // document.getElementById("_password").val("cdsf@119");
+                // document.getElementById("cas_submit").click();
             }
         }
     }
