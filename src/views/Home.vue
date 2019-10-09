@@ -42,7 +42,9 @@ export default {
           const d = iframe.contentWindow.document;
           console.log(d.getElementById("username"));
           d.getElementById("username").value = "admin";
+          d.getElementById("username").autocomplete="off";
           d.getElementById("_password").value = "cdsf@119";
+          d.getElementById("_password").autocomplete = "off";
           d.getElementById("cas_submit").click();
           //const iframeNode = window.frames["ueIframe"].document;
         };
