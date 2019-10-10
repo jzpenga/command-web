@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 import {config} from '@/utils/config'
 import axios from 'axios'
-import {getUeToken} from "../utils/auth";
+import {getUEToken} from "../utils/auth";
 
 
 export function fetchList() {
@@ -20,9 +20,9 @@ export function fetchUrl(data) {
     // request interceptor
     service.interceptors.request.use(
         config => {
-            if (getUeToken()) {
-                config.headers['name'] = getUeToken().name;
-                config.headers['value'] = getUeToken().value
+            if (getUEToken()) {
+                config.headers['name'] = getUEToken().name;
+                config.headers['value'] = getUEToken().value
             }
             return config
         },
