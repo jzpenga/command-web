@@ -14,6 +14,14 @@ export function removeToken() {
   return Cookies.remove(TokenKey)
 }
 
+export function getUEToken() {
+  return Cookies.get(TokenKey)
+}
+
+export function setUEToken(token) {
+  return Cookies.set(TokenKey, token)
+}
+
 export function loginUe() {
   var ajax = new XMLHttpRequest();
   ajax.open('get','/cas/login?locale=zh_CN');
@@ -58,14 +66,7 @@ export function getUeToken() {
     if (ajax.readyState === 4 && ajax.status === 200) {
       let html = ajax.responseText;
       console.log("获取页面成功");
-      console.log(html);
-      //        <input type="hidden" id="_csrf_token" name="varzhybb69fdc0a3f4499ca914292e848b83aa" value="xlCTTggigDHx76vOY0WwJSmxI6fBNY0MOR24hrvcA" />
-      //html = html.substring(html.indexOf("<body"), html.indexOf("</body") + 7 );
-
-      // let el = document.createElement( 'html' );
-      // el.innerHTML = html;
-      //
-      // console.log(el);
+      //console.log(html);
 
       let parser=new DOMParser();
       let htmlDoc=parser.parseFromString(html, "text/html");
@@ -75,6 +76,9 @@ export function getUeToken() {
 
       console.log(tokenInput.name);
       console.log(tokenInput.value);
+
+      let token = {name:tokenInput.name,value:tokenInput.value};
+      setUEToken(token);
 
     } else {
       console.log("获取页面失败")
