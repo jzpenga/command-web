@@ -24,10 +24,12 @@
                                  label-width="100px"
                                  size="small">
                             <el-form-item label="手机链接：" prop="url">
-                                <el-input v-model="urlData.url" class="input-width"></el-input>
+<!--                                <el-input v-model="urlData.url" class="input-width"></el-input>-->
+                                <el-button type="primary" @click="selectUEUrlDialogVisible = true">选择url</el-button>
+                                <span>  {{urlData.url}}</span>
                             </el-form-item>
                             <el-form-item label="pad链接：" prop="padUrl">
-                                <el-input v-model="urlData.padUrl" class="input-width"></el-input>
+<!--                                <el-input v-model="urlData.padUrl" class="input-width"></el-input>-->
                             </el-form-item>
                         </el-form>
                         <el-button type="primary" @click="onSubmit('urlForm')">保 存</el-button>
@@ -35,10 +37,24 @@
                 </el-card>
             </el-col>
         </el-row>
+
+        <el-dialog
+                append-to-body
+                center
+                title="选择项目url"
+                :visible.sync="selectUEUrlDialogVisible"
+                width="50%"
+        >
+            <u-e-url-select/>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="selectUEUrlDialogVisible = false">关闭</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script>
+    import UEUrlSelect from '../../../components/UEUrlSelect';
 
     import {getTargetListByUserId} from "../../../api/target";
     import {saveUrl} from "../../../api/userDiversification";
@@ -60,10 +76,14 @@
                 default: ''
             }
         },
+        components:{
+          UEUrlSelect
+        },
         data() {
             return {
                 urlData: defaultUrlData,
                 optionalList: [],
+                selectUEUrlDialogVisible:false
             }
         },
 
