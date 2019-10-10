@@ -19,8 +19,7 @@ export function fetchUrl(data) {
             console.log(getUEToken());
             if (getUEToken()) {
                 let ueToken = JSON.parse(getUEToken());
-                config.headers['name'] = ueToken.name;
-                config.headers['value'] = ueToken.value
+                config.headers[ueToken.name] = ueToken.value;
             }
             return config
         },
