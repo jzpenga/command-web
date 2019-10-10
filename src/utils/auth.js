@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie'
 
 const TokenKey = 'Command-Token';
+const UETokenKey = 'Command-Token-ue';
 
 export function getToken() {
   return Cookies.get(TokenKey)
@@ -15,11 +16,11 @@ export function removeToken() {
 }
 
 export function getUEToken() {
-  return Cookies.get(TokenKey)
+  return Cookies.get(UETokenKey)
 }
 
 export function setUEToken(token) {
-  return Cookies.set(TokenKey, token)
+  return Cookies.set(UETokenKey, token)
 }
 
 export function loginUe() {
