@@ -22,6 +22,7 @@ export function loginUe() {
     if (ajax.readyState===4 &&ajax.status===200) {
       var html = ajax.responseText;
       var form1 = html.substring(html.indexOf("<form"), html.indexOf("</form") + 7 );
+      console.log(form1);
       if (form1){
         var div = document.createElement("div");
         div.innerHTML = form1;
