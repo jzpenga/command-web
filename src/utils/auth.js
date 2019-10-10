@@ -67,7 +67,7 @@ export function getUeToken() {
     if (ajax.readyState === 4 && ajax.status === 200) {
       let html = ajax.responseText;
       console.log("获取页面成功");
-      //console.log(html);
+      console.log(html);
 
       let parser=new DOMParser();
       let htmlDoc=parser.parseFromString(html, "text/html");
