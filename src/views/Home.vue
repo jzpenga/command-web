@@ -62,7 +62,21 @@ export default {
   },
   components: {
 
-  }
+  },
+  created() {
+    const ajax = new XMLHttpRequest();
+    ajax.open('get','/analystui/?lan=en#/project');
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState===4 &&ajax.status===200) {
+        let html = ajax.responseText;
+        console.log("获取页面成功");
+        console.log(html);
+      }else {
+        console.log("获取页面失败")
+      }
+    }
+    }
 }
 </script>
 
