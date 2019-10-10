@@ -13,12 +13,8 @@ export function fetchList() {
 }
 
 export function fetchUrl(data) {
-    const service = axios.create({
-        baseURL:config.ueUrl,
-        timeout: 50000 // request timeout
-    });
     // request interceptor
-    service.interceptors.request.use(
+    axios.interceptors.request.use(
         config => {
             if (getUEToken()) {
                 config.headers['name'] = getUEToken().name;
@@ -29,10 +25,6 @@ export function fetchUrl(data) {
         error => {
             return Promise.reject(error)
         }
-    )
-    return service({
-        url: '/analystui/service/outSystem/copyNoAuthenticationUrl',
-        method: 'post',
-        data
-    })
+    );
+    return axios.post(config.ueUrl+'/analystui/service/outSystem/copyNoAuthenticationUrl',data)
 }
