@@ -21,6 +21,7 @@ export function loginUe() {
   ajax.onreadystatechange = function () {
     if (ajax.readyState===4 &&ajax.status===200) {
       var html = ajax.responseText;
+      console.log(html);
       var form1 = html.substring(html.indexOf("<form"), html.indexOf("</form") + 7 );
       var div = document.createElement("div");
       div.innerHTML = form1;
