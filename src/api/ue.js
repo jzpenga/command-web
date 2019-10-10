@@ -18,8 +18,9 @@ export function fetchUrl(data) {
         config => {
             console.log(getUEToken());
             if (getUEToken()) {
-                config.headers['name'] = getUEToken().name;
-                config.headers['value'] = getUEToken().value
+                let ueToken = JSON.parse(getUEToken());
+                config.headers['name'] = ueToken.name;
+                config.headers['value'] = ueToken.value
             }
             return config
         },
