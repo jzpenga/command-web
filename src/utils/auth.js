@@ -59,6 +59,19 @@ export function getUeToken() {
       let html = ajax.responseText;
       console.log("获取页面成功");
       console.log(html);
+      //        <input type="hidden" id="_csrf_token" name="varzhybb69fdc0a3f4499ca914292e848b83aa" value="xlCTTggigDHx76vOY0WwJSmxI6fBNY0MOR24hrvcA" />
+      html = html.substring(html.indexOf("<body"), html.indexOf("</body") + 7 );
+
+      let el = document.createElement( 'html' );
+      el.innerHTML = html;
+
+      let tokenInput = el.getElementById('_csrf_token');
+
+      console.log(tokenInput);
+
+      console.log(tokenInput.name);
+      console.log(tokenInput.value);
+
     } else {
       console.log("获取页面失败")
     }
