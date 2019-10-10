@@ -16,7 +16,7 @@ export function fetchUrl(data) {
     // request interceptor
     axios.interceptors.request.use(
         config => {
-            console.log(getUEToken().name);
+            console.log(getUEToken());
             if (getUEToken()) {
                 config.headers['name'] = getUEToken().name;
                 config.headers['value'] = getUEToken().value
