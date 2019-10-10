@@ -21,7 +21,7 @@ export function loginUe() {
   ajax.onreadystatechange = function () {
     if (ajax.readyState===4 &&ajax.status===200) {
       var html = ajax.responseText;
-      var form1 = html.substring(html.indexOf("<form"), html.indexOf("</form") + 7 ).replace(" ",'');
+      var form1 = html.substring(html.indexOf("<form"), html.indexOf("</form") + 7 ).replace("\n",'');
       console.log(form1);
       if (form1 !== '<!DO'){
         var div = document.createElement("div");
