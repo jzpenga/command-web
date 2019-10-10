@@ -16,11 +16,11 @@ export function removeToken() {
 }
 
 export function getUEToken() {
-  return localStorage.getItem(UETokenKey);
+  return Cookies.get(UETokenKey)
 }
 
 export function setUEToken(token) {
-  return localStorage.setItem(UETokenKey,token);
+  return Cookies.set(UETokenKey, token)
 }
 
 export function loginUe() {
