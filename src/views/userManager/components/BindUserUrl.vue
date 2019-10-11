@@ -29,7 +29,8 @@
                                 <span>  {{urlData.url}}</span>
                             </el-form-item>
                             <el-form-item label="pad链接：" prop="padUrl">
-<!--                                <el-input v-model="urlData.padUrl" class="input-width"></el-input>-->
+                                <el-button type="primary" @click="selectPadUEUrlDialogVisible = true">选择url</el-button>
+                                <span>  {{urlData.padUrl}}</span>
                             </el-form-item>
                         </el-form>
                         <el-button type="primary" @click="onSubmit('urlForm')">保 存</el-button>
@@ -48,6 +49,19 @@
             <u-e-url-select @onDataSelectChange="phoneUrlSelect"/>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="selectUEUrlDialogVisible = false">关闭</el-button>
+            </div>
+        </el-dialog>
+
+        <el-dialog
+                append-to-body
+                center
+                title="选择项目url"
+                :visible.sync="selectPadUEUrlDialogVisible"
+                width="50%"
+        >
+            <u-e-url-select @onDataSelectChange="padUrlSelect"/>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="selectPadUEUrlDialogVisible = false">关闭</el-button>
             </div>
         </el-dialog>
     </div>
@@ -83,7 +97,8 @@
             return {
                 urlData: defaultUrlData,
                 optionalList: [],
-                selectUEUrlDialogVisible:false
+                selectUEUrlDialogVisible:false,
+                selectPadUEUrlDialogVisible:false
             }
         },
 
@@ -107,10 +122,10 @@
         },
         methods:{
             phoneUrlSelect(data){
-                console.log(data);
+                this.urlData = {...this.urlData,url:data.url}
             },
             padUrlSelect(data){
-                console.log(data);
+                this.urlData = {...this.urlData,padUrl:data.url}
             },
             optionalItemClick(item){
                 this.urlData = item;
