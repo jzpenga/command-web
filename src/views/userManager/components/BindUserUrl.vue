@@ -45,7 +45,7 @@
                 :visible.sync="selectUEUrlDialogVisible"
                 width="50%"
         >
-            <u-e-url-select/>
+            <u-e-url-select @onDataSelectChange="phoneUrlSelect"/>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="selectUEUrlDialogVisible = false">关闭</el-button>
             </div>
@@ -106,6 +106,12 @@
             }
         },
         methods:{
+            phoneUrlSelect(data){
+                console.log(data);
+            },
+            padUrlSelect(data){
+                console.log(data);
+            },
             optionalItemClick(item){
                 this.urlData = item;
             },

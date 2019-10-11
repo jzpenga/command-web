@@ -9,7 +9,6 @@
             <div class="custom-tree-node" slot-scope="{ node, data }">
                 <div>
                     <span>{{ data.name }}</span>
-                    <!--                    <input placeholder="请输入部门名称" v-if="data.edit" class="name-input" v-model="data.name"></input>-->
                 </div>
                 <div class="option">
                     <el-button type="text" size="mini" @click="() => selectOption(node, data)">选择</el-button>
@@ -41,12 +40,12 @@
         },
         methods:{
             selectOption(node, data){
-                console.log(data);
                 fetchUrl({
                     projectId:data.projectId,
                     pageId:data.id
                 }).then(res=>{
-                    console.log(res);
+                    console.log(res.data.data);
+                    this.$emit("onDataSelectChange",{name:data.name,url:res.data.data});
                 })
             }
         }
