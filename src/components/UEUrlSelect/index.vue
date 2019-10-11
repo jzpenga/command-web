@@ -21,6 +21,7 @@
 
 <script>
     import {fetchUrl,fetchList} from "../../api/ue";
+    import {config} from "../../utils/config";
 
     export default {
         name: "index",
@@ -45,7 +46,7 @@
                     pageId:data.id
                 }).then(res=>{
                     console.log(res.data.data);
-                    this.$emit("onDataSelectChange",{name:data.name,url:res.data.data});
+                    this.$emit("onDataSelectChange",{name:data.name,url:res.data.data.replace(config.ueUrl,"")});
                 })
             }
         }
