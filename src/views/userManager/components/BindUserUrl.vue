@@ -154,6 +154,11 @@
                         type: 'success',
                         message: '保存成功!'
                     });
+                    if (this.dataType === 'target'){
+                        this.getTargetList();
+                    } else if (this.dataType === 'subject') {
+                        this.getSubjectList();
+                    }
                 })
             }
         }
