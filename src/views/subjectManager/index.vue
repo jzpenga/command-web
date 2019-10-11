@@ -155,7 +155,9 @@
                 defaultProps: {
                     children: 'child',
                     label: 'name'
-                }
+                },
+                selectUEUrlDialogVisible:false,
+                selectPadUEUrlDialogVisible:false
             }
         },
         created() {
