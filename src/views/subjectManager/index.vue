@@ -67,10 +67,12 @@
                 </el-form-item>
 
                 <el-form-item v-if="!isEditCategory" label="手机链接：" prop="url">
-                    <el-input v-model="target.url" class="input-width"></el-input>
+                    <el-button type="primary" @click="selectUEUrlDialogVisible = true">选择url</el-button>
+                    <span>  {{target.url}}</span>
                 </el-form-item>
                 <el-form-item v-if="!isEditCategory" label="pad链接：" prop="padUrl">
-                    <el-input v-model="target.padUrl" class="input-width"></el-input>
+                    <el-button type="primary" @click="selectPadUEUrlDialogVisible = true">选择url</el-button>
+                    <span>  {{target.padUrl}}</span>
                 </el-form-item>
                 <el-form-item v-if="!isEditCategory" label="图标：" prop="pic">
                     <el-upload
@@ -89,6 +91,31 @@
     <el-button type="primary" @click="onSubmit('targetFrom')">保 存</el-button>
   </span>
         </el-dialog>
+        <el-dialog
+                append-to-body
+                center
+                title="选择项目url"
+                :visible.sync="selectUEUrlDialogVisible"
+                width="50%"
+        >
+            <u-e-url-select @onDataSelectChange="phoneUrlSelect"/>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="selectUEUrlDialogVisible = false">关闭</el-button>
+            </div>
+        </el-dialog>
+
+        <el-dialog
+                append-to-body
+                center
+                title="选择项目url"
+                :visible.sync="selectPadUEUrlDialogVisible"
+                width="50%"
+        >
+            <u-e-url-select @onDataSelectChange="padUrlSelect"/>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="selectPadUEUrlDialogVisible = false">关闭</el-button>
+            </div>
+        </el-dialog>
     </el-card>
 
 </template>
@@ -98,6 +125,7 @@
     import {fetchList,saveSubject,deleteSubject,getSubjectById} from "../../api/suject";
     import {config} from "../../utils/config";
     import {formatDate} from '@/utils/date';
+    import UEUrlSelect from '../../components/UEUrlSelect';
 
 
     const defaultTarget = {
@@ -133,6 +161,9 @@
         created() {
             this.getList();
         },
+        components:{
+            UEUrlSelect
+        },
         computed:{
             isCategoryItem(){
                 return function(data){
@@ -142,6 +173,14 @@
             },
         },
         methods: {
+            phoneUrlSelect(data){
+                this.target = {...this.target,url:data.url}
+                this.selectUEUrlDialogVisible = false
+            },
+            padUrlSelect(data){
+                this.target = {...this.target,padUrl:data.url}
+                this.selectPadUEUrlDialogVisible = false
+            },
             nodeExpand(data){
                 this.expandKeys.push(data.id);
             },
