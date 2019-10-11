@@ -123,9 +123,11 @@
         methods:{
             phoneUrlSelect(data){
                 this.urlData = {...this.urlData,url:data.url}
+                this.selectUEUrlDialogVisible = false
             },
             padUrlSelect(data){
                 this.urlData = {...this.urlData,padUrl:data.url}
+                this.selectPadUEUrlDialogVisible = false
             },
             optionalItemClick(item){
                 this.urlData = item;
