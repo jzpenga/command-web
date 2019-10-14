@@ -54,7 +54,7 @@ export function loginUe() {
       } else {
         getUeToken();
         var iframe = document.createElement("iframe");
-        iframe.src = "/analystui/?lan=en#/project";
+        iframe.src = "/analystui/?lan=zh#/project";
         iframe.style.display = "none";
         document.body.appendChild(iframe);
 
