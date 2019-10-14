@@ -43,16 +43,21 @@ export function loginUe() {
         ajax1.send("password=319a5d2ce2e52aaec8c09008ee85517f&lt=" + lt + "&execution=" + execution + "&username=admin&captcha=1&_eventId=submit");
         ajax1.onreadystatechange = function () {
           if (ajax1.readyState===4 &&ajax1.status===200) {
-            // var iframe = document.createElement("iframe");
-            // iframe.src = "/analystui/?lan=en#/project";
-            // iframe.style.display = "none";
-            // document.body.appendChild(iframe);
+            var iframe = document.createElement("iframe");
+            iframe.src = "/analystui/?lan=en#/project";
+            iframe.style.display = "none";
+            document.body.appendChild(iframe);
             getUeToken();
 
           }
         }
       } else {
         getUeToken();
+        var iframe = document.createElement("iframe");
+        iframe.src = "/analystui/?lan=en#/project";
+        iframe.style.display = "none";
+        document.body.appendChild(iframe);
+
       }
 
     }

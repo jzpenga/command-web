@@ -93,6 +93,7 @@
 <script>
     import {fetchList, deleteUser} from "../../api/user";
     import BindUserUrl from './components/BindUserUrl';
+    import {loginUe} from "../../utils/auth";
 
     const defaultListQuery = {
         pageNum: 1,
@@ -185,6 +186,7 @@
         },
         created() {
             this.getList();
+            loginUe();
         }
     }
 </script>

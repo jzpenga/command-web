@@ -126,6 +126,7 @@
     import {config} from "../../utils/config";
     import {formatDate} from '@/utils/date';
     import UEUrlSelect from '../../components/UEUrlSelect';
+    import {loginUe} from "../../utils/auth";
 
 
     const defaultTarget = {
@@ -161,7 +162,9 @@
             }
         },
         created() {
+
             this.getList();
+            loginUe();
         },
         components:{
             UEUrlSelect
