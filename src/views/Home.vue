@@ -64,7 +64,7 @@
         },
         components: {},
         created() {
-            loginUe();
+            //loginUe();
             //getUeToken();
         }
     }
