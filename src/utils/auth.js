@@ -44,7 +44,7 @@ export function loginUe() {
         ajax1.onreadystatechange = function () {
           if (ajax1.readyState===4 &&ajax1.status===200) {
             var iframe = document.createElement("iframe");
-            iframe.src = "/analystui/?lan=en#/project";
+            iframe.src = "/analystui/?lan=zh#/project";
             iframe.style.display = "none";
             document.body.appendChild(iframe);
             getUeToken();
@@ -66,7 +66,7 @@ export function loginUe() {
 
 export function getUeToken() {
   const ajax = new XMLHttpRequest();
-  ajax.open('get', '/analystui/?lan=en#/project');
+  ajax.open('get', '/analystui/?lan=zh#/project');
   ajax.send();
   ajax.onreadystatechange = function () {
     if (ajax.readyState === 4 && ajax.status === 200) {
