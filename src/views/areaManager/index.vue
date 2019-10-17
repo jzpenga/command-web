@@ -144,7 +144,7 @@
     import * as targetService from "../../api/target";
     import * as subjectService from "../../api/suject";
     import UEUrlSelect from '../../components/UEUrlSelect';
-    import {loginUe} from "../../utils/auth";
+
 
 
     import {config} from "../../utils/config";
@@ -191,7 +191,6 @@
         },
         created() {
             this.getList();
-            loginUe();
         },
 
         methods: {

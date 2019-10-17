@@ -17,11 +17,8 @@ export function fetchUrl(data) {
     // request interceptor
     axios.interceptors.request.use(
         config => {
-            console.log(getUEToken());
-            if (getUEToken()) {
-                let ueToken = JSON.parse(getUEToken());
-                config.headers[ueToken.name] = ueToken.value;
-            }
+            let ueToken = JSON.parse(getUEToken());
+            config.headers[ueToken.name] = ueToken.value;
             config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
             config.headers['Accept'] = 'application/json';
             return config

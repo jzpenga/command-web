@@ -115,10 +115,9 @@
 <script>
     import UEUrlSelect from '../../components/UEUrlSelect';
 
-    let id = 1000;
     import {fetchList,saveTarget,deleteTarget,getTargetById} from "../../api/target";
     import {config} from "../../utils/config";
-    import {loginUe} from "../../utils/auth";
+    import {getUeToken} from "../../utils/auth";
 
     const defaultTarget = {
         name:'',
@@ -155,7 +154,7 @@
         },
         created() {
             this.getList();
-            loginUe();
+            getUeToken();
         },
         components:{
           UEUrlSelect

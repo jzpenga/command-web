@@ -121,12 +121,12 @@
 </template>
 
 <script>
-    let id = 1000;
+
     import {fetchList,saveSubject,deleteSubject,getSubjectById} from "../../api/suject";
     import {config} from "../../utils/config";
     import {formatDate} from '@/utils/date';
     import UEUrlSelect from '../../components/UEUrlSelect';
-    import {loginUe} from "../../utils/auth";
+    import {getUeToken} from "../../utils/auth";
 
 
     const defaultTarget = {
@@ -162,9 +162,8 @@
             }
         },
         created() {
-
             this.getList();
-            loginUe();
+            getUeToken();
         },
         components:{
             UEUrlSelect
