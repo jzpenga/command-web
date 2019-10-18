@@ -59,12 +59,12 @@
                     <el-input  v-model="target.typeName" class="input-width"></el-input>
                 </el-form-item>
                 <el-form-item v-if="!isEditCategory" label="手机链接：" prop="url">
+                    <el-input v-model="target.url" class="input-width"></el-input>
                     <el-button type="primary" @click="selectUEUrlDialogVisible = true">选择url</el-button>
-                    <span>  {{target.url}}</span>
                 </el-form-item>
                 <el-form-item v-if="!isEditCategory" label="pad链接：" prop="padUrl">
+                    <el-input v-model="target.padUrl" class="input-width"></el-input>
                     <el-button type="primary" @click="selectPadUEUrlDialogVisible = true">选择url</el-button>
-                    <span>  {{target.padUrl}}</span>
                 </el-form-item>
                 <el-form-item v-if="!isEditCategory" label="图标：" prop="pic">
                     <el-upload
