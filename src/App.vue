@@ -5,7 +5,12 @@
 </template>
 
 <script>
+  import {loginUe} from "./utils/auth";
+
   export default {
-    name: 'App'
+    name: 'App',
+    created() {
+        loginUe();
+    },
   }
 </script>

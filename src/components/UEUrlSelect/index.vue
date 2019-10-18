@@ -45,8 +45,11 @@
                     projectId:data.projectId,
                     pageId:data.id
                 }).then(res=>{
-                    console.log(res.data.data);
-                    this.$emit("onDataSelectChange",{name:data.name,url:res.data.data.replace(config.ueUrl,"")});
+                    let s = res.data.data;
+                    s = s.substr(s.indexOf("/") + 1);
+                    s = s.substr(s.indexOf("/") + 1);
+                    s = s.substr(s.indexOf("/"));
+                    this.$emit("onDataSelectChange",{name:data.name,url: s});
                 })
             }
         }

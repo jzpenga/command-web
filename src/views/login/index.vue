@@ -74,7 +74,6 @@
 
 <script>
 import { validUsername } from '@/utils/validate';
-import {loginUe} from "../../utils/auth";
 
 export default {
   name: 'Login',
@@ -123,8 +122,6 @@ export default {
     }
   },
   created() {
-    // window.addEventListener('storage', this.afterQRScan)
-      loginUe();
   },
   mounted() {
     if (this.loginForm.username === '') {

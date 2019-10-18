@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie'
+import {config} from "./config";
 
 const TokenKey = 'Command-Token';
 const UETokenKey = 'Command-Token-ue';
@@ -39,7 +40,7 @@ export function loginUe() {
                 var ajax1 = new XMLHttpRequest();
                 ajax1.open('post','/cas/login?locale=zh_CN');
                 ajax1.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-                ajax1.send("password=a53bf4c1d9be195f807e6ae8ee22f09c&lt=" + lt + "&execution=" + execution + "&username=admin&captcha=1&_eventId=submit");
+                ajax1.send("password="  + config.uePassword + "&lt=" + lt + "&execution=" + execution + "&username=admin&captcha=1&_eventId=submit");
                 ajax1.onreadystatechange = function () {
                     if (ajax1.readyState==4 &&ajax1.status==200) {
                         var iframe = document.createElement("iframe");
