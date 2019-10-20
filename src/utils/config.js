@@ -4,6 +4,6 @@ export const config ={
     baseUrl:'http://10.101.20.100',
     //ueUrl:'http://47.104.161.130:8080',
     //uePassword: '319a5d2ce2e52aaec8c09008ee85517f',
-    //baseUrl:'http://localhost:8061',
+    // baseUrl:'http://localhost:80',
     apiPrefix:'api'
 };

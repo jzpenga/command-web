@@ -287,7 +287,6 @@
                             type: 'warning'
                         }).then(() => {
                             if (this.isEdit) {
-                                console.log(this.target)
                                 save({...this.target}).then(response => {
                                     this.$refs[formName].resetFields();
                                     this.$message({

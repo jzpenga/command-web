@@ -1,13 +1,6 @@
 <template>
     <div class="home">
         <img style="width: 500px;height: 500px" alt="logo" src="../assets/logo.png">
-        <iframe style="width: 2px;height: 2px"
-                ref="ueIframe"
-                id="ueIframe"
-                @onload="initIframe"
-                :src="baseUrl+'/analystui/?lan=zh#/project'">
-
-        </iframe>
     </div>
 </template>
 
@@ -26,12 +19,7 @@
 
         },
         methods: {
-            initIframe() {
-                // document.getElementById("username").value("admin");
-                // console.log(document.getElementById("username"));
-                // document.getElementById("_password").val("cdsf@119");
-                // document.getElementById("cas_submit").click();
-            }
+
         },
         components: {},
         created() {

@@ -171,6 +171,18 @@ export const  constantRoutes =[
             }
         ]
     },
+    {
+        path: '/parameters',
+        component: Layout,
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/parameterManager'),
+                name: '参数管理',
+                meta: { title: '参数管理', icon: 'role', affix: true }
+            }
+        ]
+    },
   ];
 
 
