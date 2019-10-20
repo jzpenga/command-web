@@ -8,13 +8,7 @@
                 <el-col :span="4"><el-input placeholder="请输入所属用户编号" size="mini" v-model="listQuery.userId" clearable></el-input></el-col>
                 <el-col :span="2">
                     <el-select v-model="listQuery.type" placeholder="参数类型" size="mini" clearable>
-                        <el-option
-                                v-for="(k,v) in typeOptions"
-                                :key="k"
-                                :value="v"
-                                :label="k"
-                                >
-                        </el-option>
+                        <el-option v-for="(k,v) in typeOptions" :key="k" :value="v" :label="k"></el-option>
                     </el-select>
                 </el-col>
 
@@ -27,25 +21,13 @@
         </el-card>
 
         <div class="table-container">
-            <el-table
-                      :data="list"
-                      style="width: 100%;"
-                      v-loading="listLoading" border>
-                <el-table-column label="编号" width="120" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
-                </el-table-column>
-                <el-table-column label="参数名" align="left">
-                    <template slot-scope="scope">{{scope.row.name}}</template>
-                </el-table-column>
-                <el-table-column label="参数值" align="left">
-                    <template slot-scope="scope">{{scope.row.value}}</template>
-                </el-table-column>
-                <el-table-column label="参数类型" align="center">
-                    <template slot-scope="scope">{{translateType(scope.row.type)}}</template>
-                </el-table-column>
-                <el-table-column label="所属用户" align="left">
-                    <template slot-scope="scope">{{scope.row.userId}}</template>
-                </el-table-column>
+            <el-table :data="list" style="width: 100%;" v-loading="listLoading" size="mini" stripe border
+                      @sort-change="changeSort" :default-sort = "listQuery">
+                <el-table-column label="编号" width="120" align="center" sortable="custom" prop="id"></el-table-column>
+                <el-table-column label="参数名" align="left" sortable="custom" prop="name"></el-table-column>
+                <el-table-column label="参数值" align="left" show-overflow-tooltip prop="value"></el-table-column>
+                <el-table-column label="参数类型" align="center" sortable="custom" prop="type" :formatter="translateType"></el-table-column>
+                <el-table-column label="所属用户" align="left" prop="userId"></el-table-column>
                 <el-table-column label="操作" width="120" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini"
@@ -111,7 +93,9 @@
     import {add, fetchList, modify, remove} from "../../api/parameter";
     const defaultListQuery = {
         page: 1,
-        size: 5
+        size: 10,
+        prop: 'id',
+        order: 'descending'
     };
 
     export default {
@@ -153,10 +137,14 @@
             }
         },
         methods:{
-            getList(manual) {
+            getList(manual, order) {
                 this.listLoading = true;
                 if (manual) {
                     this.listQuery.page = 1;
+                }
+                if (order) {
+                    this.listQuery.order = order.order;
+                    this.listQuery.prop = order.prop;
                 }
                 fetchList(this.listQuery).then(response => {
                     this.listLoading = false;
@@ -165,22 +153,26 @@
                     this.total = Number.parseInt(totalElements);
                 })
             },
+            changeSort(data) {
+              this.getList(true, data);
+            },
             handleSizeChange(val) {
                 this.listQuery.page = 1;
                 this.listQuery.size = val;
                 defaultListQuery.size = val;
-                this.getList();
+                this.getList(true);
             },
             handleCurrentChange(val) {
                 this.listQuery.page = val;
                 this.getList();
             },
             translateType(val) {
-              return this.typeOptions[val];
+              return this.typeOptions[val.type];
             },
             resetParams() {
+                let order = this.listQuery;
                 this.listQuery = Object.assign({}, defaultListQuery);
-                this.getList();
+                this.getList(true, order);
             },
             handleEdit(data) {
                 this.target = Object.assign({}, data);
