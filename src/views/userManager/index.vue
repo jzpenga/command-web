@@ -170,8 +170,6 @@
                     this.listQuery.order = order.order;
                     this.listQuery.prop = order.prop;
                 }
-                console.log(this.listQuery);
-                console.log(order);
                 fetchList(this.listQuery).then(response => {
                     this.listLoading = false;
                     const {content, totalElements} = response;
