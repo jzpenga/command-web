@@ -19,7 +19,7 @@
 
         <div class="table-container">
             <el-table :data="list" style="width: 100%;" v-loading="listLoading" size="mini" stripe border
-                       @sort-change="changeSort" :default-sort = "listQuery">
+                       @sort-change="changeSort">
                 <el-table-column label="编号" width="160" align="center" sortable="custom" prop="id">
                 </el-table-column>
                 <el-table-column label="用户名" align="left" width="120"  sortable="custom" prop="username">

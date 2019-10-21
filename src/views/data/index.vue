@@ -18,7 +18,7 @@
 
         <div class="table-container">
             <el-table :data="list" style="width: 100%;" v-loading="listLoading" size="mini" stripe border
-                      @sort-change="changeSort" :default-sort = "listQuery">
+                      @sort-change="changeSort" >
                 <el-table-column label="编号" width="160" align="center" sortable="custom" prop="id"></el-table-column>
                 <el-table-column label="名称" width="200" align="left" sortable="custom" prop="name"></el-table-column>
                 <el-table-column label="URL" align="left" show-overflow-tooltip prop="url"></el-table-column>
@@ -79,7 +79,7 @@
 
             <div class="table-container">
                 <el-table :data="listP" style="width: 100%;" v-loading="listLoadingP" size="mini" stripe border
-                          @sort-change="changeSortP" :default-sort = "listQueryP">
+                          @sort-change="changeSortP" >
                     <el-table-column label="编号" width="160" align="center" sortable="custom" prop="id"></el-table-column>
                     <el-table-column label="参数名" width="150" align="left" sortable="custom" prop="name"></el-table-column>
                     <el-table-column label="参数值" align="left" show-overflow-tooltip prop="value"></el-table-column>
