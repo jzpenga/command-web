@@ -1,37 +1,38 @@
 <template>
     <div>
-        <!--        <el-button type="text" @click="dialogVisible = true">点击打开 Dialog</el-button>-->
-
         <el-card class="operate-container" shadow="never">
-            <i class="el-icon-tickets"></i>
-            <span>数据列表</span>
-            <el-button size="mini" class="btn-add" @click="handleAdd()">添加用户</el-button>
+            <el-row :gutter="10" type="flex" style="flex-wrap: wrap;">
+                <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入编号" size="mini" v-model="listQuery.id" clearable><template slot="prepend">编号</template></el-input></el-col>
+                <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入用户名" size="mini" v-model="listQuery.username" clearable><template slot="prepend">用户名</template></el-input></el-col>
+                <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入昵称" size="mini" v-model="listQuery.nickName" clearable><template slot="prepend">昵称</template></el-input></el-col>
+                <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入电话" size="mini" v-model="listQuery.phone" clearable><template slot="prepend">电话</template></el-input></el-col>
+                <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入邮箱" size="mini" v-model="listQuery.email" clearable><template slot="prepend">邮箱</template></el-input></el-col>
+            </el-row>
+            <el-row >
+                <el-col style="text-align: center">
+                    <el-button size="mini" type="primary" icon="el-icon-search" @click="getList(true)">查询</el-button>
+                    <el-button size="mini" type="default" icon="el-icon-close" @click="resetParams()">重置</el-button>
+                    <el-button size="mini" type="primary" icon="el-icon-plus" @click="handleAdd()" plain>添加</el-button>
+                </el-col>
+            </el-row>
         </el-card>
+
         <div class="table-container">
-            <el-table ref="userRoleTable"
-                      :data="list"
-                      style="width: 100%;"
-                      @selection-change="handleSelectionChange"
-                      v-loading="listLoading" border>
-                <el-table-column label="编号" width="120" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
+            <el-table :data="list" style="width: 100%;" v-loading="listLoading" size="mini" stripe border
+                       @sort-change="changeSort" :default-sort = "listQuery">
+                <el-table-column label="编号" width="160" align="center" sortable="custom" prop="id">
                 </el-table-column>
-                <el-table-column label="用户名" align="center">
-                    <template slot-scope="scope">{{scope.row.username}}</template>
+                <el-table-column label="用户名" align="left" width="120"  sortable="custom" prop="username">
                 </el-table-column>
-                <el-table-column label="昵称" align="center">
-                    <template slot-scope="scope">{{scope.row.nickName}}</template>
+                <el-table-column label="昵称" align="center" width="100" sortable="custom" prop="nickName">
                 </el-table-column>
-                <el-table-column label="电话" align="center">
-                    <template slot-scope="scope">{{scope.row.phone}}</template>
+                <el-table-column label="电话" align="left" width="100" sortable="custom" prop="phone">
                 </el-table-column>
-                <el-table-column label="邮箱" align="center">
-                    <template slot-scope="scope">{{scope.row.email}}</template>
+                <el-table-column label="邮箱" align="left" sortable="custom" prop="email">
                 </el-table-column>
-                <el-table-column label="创建时间" align="center">
-                    <template slot-scope="scope">{{scope.row.createTime}}</template>
+                <el-table-column label="创建时间" align="center" sortable="custom" prop="createTime">
                 </el-table-column>
-                <el-table-column label="操作" width="120" align="center">
+                <el-table-column label="操作" width="240" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini"
                                    type="text"
@@ -59,9 +60,9 @@
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     layout="total, sizes,prev, pager, next,jumper"
-                    :page-size="listQuery.pageSize"
+                    :page-size="listQuery.size"
                     :page-sizes="[5,10,15]"
-                    :current-page.sync="listQuery.pageNum"
+                    :current-page.sync="listQuery.page"
                     :total="total">
             </el-pagination>
         </div>
@@ -95,12 +96,12 @@
     import BindUserUrl from './components/BindUserUrl';
 
     const defaultListQuery = {
-        pageNum: 1,
-        pageSize: 5,
-        name: null,
-        type: null,
-        endTime: null
+        page: 1,
+        size: 10,
+        prop: 'id',
+        order: 'descending'
     };
+
     export default {
         name: "index",
         data: function () {
@@ -148,23 +149,40 @@
                 this.$router.push({path: '/userManager/editUser', query: {id: row.id}})
             },
             handleSizeChange(val) {
-                this.listQuery.pageNum = 1;
-                this.listQuery.pageSize = val;
-                this.getList();
+                this.listQuery.page = 1;
+                this.listQuery.size = val;
+                defaultListQuery.size = val;
+                this.getList(true);
             },
             handleCurrentChange(val) {
-                this.listQuery.pageNum = val;
+                this.listQuery.page = val;
                 this.getList();
             },
-            getList() {
+            resetParams() {
+                let order = this.listQuery;
+                this.listQuery = Object.assign({}, defaultListQuery);
+                this.getList(true, order);
+            },
+            getList(manual, order) {
                 this.listLoading = true;
+                if (manual) {
+                    this.listQuery.page = 1;
+                }
+                if (order) {
+                    this.listQuery.order = order.order;
+                    this.listQuery.prop = order.prop;
+                }
+                console.log(this.listQuery);
+                console.log(order);
                 fetchList(this.listQuery).then(response => {
                     this.listLoading = false;
-                    console.log('getList', response);
                     const {content, totalElements} = response;
                     this.list = content;
                     this.total = Number.parseInt(totalElements);
                 })
+            },
+            changeSort(data) {
+                this.getList(true, data);
             },
             deleteUser(ids) {
                 this.$confirm('是否要删除该用户吗?', '提示', {
@@ -172,7 +190,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    deleteUser(ids).then(response => {
+                    deleteUser(ids).then(() => {
                         this.getList();
                         this.$message({
                             type: 'success',

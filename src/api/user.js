@@ -21,8 +21,9 @@ export function logout() {
  */
 export function fetchList(data) {
   return request({
-    url: `/command/user/userList?page=${data.pageNum}&rows=${data.pageSize}`,
-    method: 'get'
+      url: `/command/user/userList`,
+      method: 'get',
+      params: data
   })
 }
 

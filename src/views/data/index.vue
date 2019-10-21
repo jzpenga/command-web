@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-card class="operate-container" shadow="never">
-            <el-row :gutter="10" type="flex" justify="center" style="flex-wrap: wrap;">
+            <el-row :gutter="10" type="flex" style="flex-wrap: wrap;">
                 <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入名称" size="mini" v-model="listQuery.name" clearable><template slot="prepend">名称</template></el-input></el-col>
                 <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入URL" size="mini" v-model="listQuery.url" clearable><template slot="prepend">URL</template></el-input></el-col>
                 <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入备注" size="mini" v-model="listQuery.remark" clearable><template slot="prepend">备注</template></el-input></el-col>
@@ -57,7 +57,7 @@
 
         <el-dialog title="请求参数管理" :visible.sync="dialogVisible" center fullscreen>
             <el-card class="operate-container" shadow="never">
-                <el-row :gutter="10" type="flex" justify="center" style="flex-wrap: wrap;">
+                <el-row :gutter="10" type="flex" style="flex-wrap: wrap;">
                     <el-col :lg="6" :md="8" :sm="12"><el-input size="mini" v-model="listQueryP.requestId" clearable :disabled="true"><template slot="prepend">请求编号</template></el-input></el-col>
                     <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入参数名" size="mini" v-model="listQueryP.name" clearable><template slot="prepend">参数名</template></el-input></el-col>
                     <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入参数值" size="mini" v-model="listQueryP.url" clearable><template slot="prepend">参数值</template></el-input></el-col>

@@ -2,7 +2,7 @@
     <div>
 
         <el-card class="operate-container" shadow="never">
-            <el-row :gutter="10" type="flex" justify="center" style="flex-wrap: wrap;">
+            <el-row :gutter="10" type="flex" style="flex-wrap: wrap;">
                 <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入参数名" size="mini" v-model="listQuery.name" clearable><template slot="prepend">参数名</template></el-input></el-col>
                 <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入参数值" size="mini" v-model="listQuery.value" clearable><template slot="prepend">参数值</template></el-input></el-col>
                 <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入所属用户编号" size="mini" v-model="listQuery.userId" clearable><template slot="prepend">用户编号</template></el-input></el-col>
