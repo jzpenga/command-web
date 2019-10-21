@@ -162,8 +162,7 @@
         computed:{
             isCategoryItem(){
                 return function(data){
-                    let path = data.path;
-                    return path.split("-").length<2
+                    return data.level == 1;
                 };
             },
         },
