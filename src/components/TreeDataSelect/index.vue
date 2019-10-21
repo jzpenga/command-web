@@ -85,12 +85,14 @@
             this.selectedIdList = this.outerSelectIdList?this.outerSelectIdList:[];
             if (this.dataType === 'target') {
                 targetTree(0).then((res) => {
-                        this.treeData = res
+                        this.treeData = res;
+                        this.optionalList = res;
                     }
                 )
             }else if (this.dataType === 'subject') {
                 subjectTree(0).then((res) => {
-                        this.treeData = res
+                        this.treeData = res;
+                        this.optionalList = res;
                     }
                 )
             }else if (this.dataType === 'role') {
@@ -136,9 +138,9 @@
                 this.loadOptionalData(item.id);
             },
             handleTreeClick(data) {
-                if (data.child && data.child.length>0) {
-                    return;
-                }
+                // if (data.child && data.child.length>0) {
+                //     return;
+                // }
                 this.optionalStack = [];
                 this.optionalStack.push(data.id);
                 this.loadOptionalData(data.id);

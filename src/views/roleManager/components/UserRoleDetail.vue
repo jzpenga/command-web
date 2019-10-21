@@ -41,9 +41,9 @@
                               v-bind:outerSelectIdList="userRole.targetIds"
                               @onDataSelectChange="handleSelectTarget"/>
             <span slot="footer" class="dialog-footer">
-    <el-button @click="targetDialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="confirmTargetBind()">确 定</el-button>
-  </span>
+                <el-button @click="targetDialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="confirmTargetBind()">确 定</el-button>
+            </span>
         </el-dialog>
 
         <el-dialog
