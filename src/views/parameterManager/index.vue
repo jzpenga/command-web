@@ -3,16 +3,16 @@
 
         <el-card class="operate-container" shadow="never">
             <el-row :gutter="10">
-                <el-col :span="4"><el-input placeholder="请输入参数名" size="mini" v-model="listQuery.name" clearable></el-input></el-col>
-                <el-col :span="4"><el-input placeholder="请输入参数值" size="mini" v-model="listQuery.value" clearable></el-input></el-col>
-                <el-col :span="4"><el-input placeholder="请输入所属用户编号" size="mini" v-model="listQuery.userId" clearable></el-input></el-col>
-                <el-col :span="2">
+                <el-col :span="4"><el-input placeholder="请输入参数名" size="mini" v-model="listQuery.name" clearable><template slot="prepend">参数名</template></el-input></el-col>
+                <el-col :span="4"><el-input placeholder="请输入参数值" size="mini" v-model="listQuery.value" clearable><template slot="prepend">参数值</template></el-input></el-col>
+                <el-col :span="4"><el-input placeholder="请输入所属用户编号" size="mini" v-model="listQuery.userId" clearable><template slot="prepend">用户编号</template></el-input></el-col>
+                <el-col :span="3">
                     <el-select v-model="listQuery.type" placeholder="参数类型" size="mini" clearable>
                         <el-option v-for="(k,v) in typeOptions" :key="k" :value="v" :label="k"></el-option>
                     </el-select>
                 </el-col>
 
-                <el-col :span="4">
+                <el-col :span="9">
                     <el-button size="mini" type="primary" icon="el-icon-search" @click="getList(true)">查询</el-button>
                     <el-button size="mini" type="default" icon="el-icon-close" @click="resetParams()">重置</el-button>
                     <el-button size="mini" type="primary" icon="el-icon-plus" @click="handleEdit({})" plain>添加</el-button>
@@ -23,7 +23,7 @@
         <div class="table-container">
             <el-table :data="list" style="width: 100%;" v-loading="listLoading" size="mini" stripe border
                       @sort-change="changeSort" :default-sort = "listQuery">
-                <el-table-column label="编号" width="120" align="center" sortable="custom" prop="id"></el-table-column>
+                <el-table-column label="编号" width="160" align="center" sortable="custom" prop="id"></el-table-column>
                 <el-table-column label="参数名" align="left" sortable="custom" prop="name"></el-table-column>
                 <el-table-column label="参数值" align="left" show-overflow-tooltip prop="value"></el-table-column>
                 <el-table-column label="参数类型" align="center" sortable="custom" prop="type" :formatter="translateType"></el-table-column>
@@ -179,7 +179,7 @@
                 this.dialogVisible = true;
             },
             handleDelete(data) {
-                this.$confirm(`确定要删除该条数据（id:${data.id}）吗?`, '提示', {
+                this.$confirm(`确定要删除该条数据（编号:${data.id}）吗?`, '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'

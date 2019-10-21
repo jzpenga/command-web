@@ -2,9 +2,9 @@
     <div>
         <el-card class="operate-container" shadow="never">
             <el-row :gutter="10">
-                <el-col :span="4"><el-input placeholder="请输入名称" size="mini" v-model="listQuery.name" clearable></el-input></el-col>
-                <el-col :span="4"><el-input placeholder="请输入URL" size="mini" v-model="listQuery.url" clearable></el-input></el-col>
-                <el-col :span="4"><el-input placeholder="请输入备注" size="mini" v-model="listQuery.remark" clearable></el-input></el-col>
+                <el-col :span="4"><el-input placeholder="请输入名称" size="mini" v-model="listQuery.name" clearable><template slot="prepend">名称</template></el-input></el-col>
+                <el-col :span="4"><el-input placeholder="请输入URL" size="mini" v-model="listQuery.url" clearable><template slot="prepend">URL</template></el-input></el-col>
+                <el-col :span="4"><el-input placeholder="请输入备注" size="mini" v-model="listQuery.remark" clearable><template slot="prepend">备注</template></el-input></el-col>
 
                 <el-col :span="6">
                     <el-button size="mini" type="primary" icon="el-icon-search" @click="getList(true)">查询</el-button>
@@ -17,15 +17,19 @@
         <div class="table-container">
             <el-table :data="list" style="width: 100%;" v-loading="listLoading" size="mini" stripe border
                       @sort-change="changeSort" :default-sort = "listQuery">
-                <el-table-column label="编号" width="120" align="center" sortable="custom" prop="id"></el-table-column>
-                <el-table-column label="名称" align="left" sortable="custom" prop="name"></el-table-column>
+                <el-table-column label="编号" width="160" align="center" sortable="custom" prop="id"></el-table-column>
+                <el-table-column label="名称" width="200" align="left" sortable="custom" prop="name"></el-table-column>
                 <el-table-column label="URL" align="left" show-overflow-tooltip prop="url"></el-table-column>
-                <el-table-column label="备注" align="center" sortable="custom" prop="remark"></el-table-column>
-                <el-table-column label="操作" width="120" align="center">
+                <el-table-column label="备注" align="left" sortable="custom" prop="remark"></el-table-column>
+                <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini"
                                    type="text"
                                    @click="handleEdit(scope.row)">编辑
+                        </el-button>
+                        <el-button size="mini"
+                                   type="text"
+                                   @click="handleParameters(scope.row)">参数
                         </el-button>
                         <el-button size="mini"
                                    type="text"
@@ -49,13 +53,124 @@
             </el-pagination>
         </div>
 
+        <el-dialog title="请求参数管理" :visible.sync="dialogVisible" width="90%" center>
+            <el-card class="operate-container" shadow="never">
+                <el-row :gutter="10">
+                    <el-col :span="4"><el-input size="mini" v-model="listQueryP.requestId" clearable :disabled="true"><template slot="prepend">编号</template></el-input></el-col>
+                    <el-col :span="4"><el-input placeholder="请输入参数名" size="mini" v-model="listQueryP.name" clearable><template slot="prepend">参数名</template></el-input></el-col>
+                    <el-col :span="4"><el-input placeholder="请输入参数值" size="mini" v-model="listQueryP.url" clearable><template slot="prepend">参数值</template></el-input></el-col>
+                    <el-col :span="3">
+                        <el-select v-model="listQueryP.type" placeholder="参数位置" size="mini" width="100%" clearable>
+                            <el-option v-for="(k,v) in typeOptions" :key="k" :value="v" :label="k"></el-option>
+                        </el-select>
+                    </el-col>
+
+                    <el-col :span="8">
+                        <el-button size="mini" type="primary" icon="el-icon-search" @click="getListP(true)">查询</el-button>
+                        <el-button size="mini" type="default" icon="el-icon-close" @click="resetParamsP()">重置</el-button>
+                        <el-button size="mini" type="primary" icon="el-icon-plus" @click="handleEditP({})" plain>添加</el-button>
+                    </el-col>
+                </el-row>
+            </el-card>
+
+            <div class="table-container">
+                <el-table :data="listP" style="width: 100%;" v-loading="listLoadingP" size="mini" stripe border
+                          @sort-change="changeSortP" :default-sort = "listQueryP">
+                    <el-table-column label="编号" width="160" align="center" sortable="custom" prop="id"></el-table-column>
+                    <el-table-column label="参数名" width="150" align="left" sortable="custom" prop="name"></el-table-column>
+                    <el-table-column label="参数值" align="left" show-overflow-tooltip prop="value"></el-table-column>
+                    <el-table-column label="参数位置" align="center" sortable="custom" prop="type" :formatter="translateType"></el-table-column>
+                    <el-table-column label="操作" width="120" align="center">
+                        <template slot-scope="scope">
+                            <el-button size="mini"
+                                       type="text"
+                                       @click="handleEditP(scope.row)">编辑
+                            </el-button>
+                            <el-button size="mini"
+                                       type="text"
+                                       @click="handleDeleteP(scope.row)">删除
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+
+            <div style="text-align: center; margin: 15px 0;">
+                <el-pagination
+                        background
+                        @size-change="handleSizeChangeP"
+                        @current-change="handleCurrentChangeP"
+                        layout="total, sizes,prev, pager, next,jumper"
+                        :page-size="listQueryP.size"
+                        :page-sizes="[5,10,15]"
+                        :current-page.sync="listQueryP.page"
+                        :total="totalP">
+                </el-pagination>
+            </div>
+
+            <el-dialog title="请求参数增改" :visible.sync="dialogVisiblePP" width="40%" center append-to-body>
+                <el-form :model="targetP" v-if="targetP" :rules="rulesP" label-width="0px" ref="targetFromP" size="small" label-position="right">
+                    <el-form-item label="" v-if="targetP.id">
+                        <el-input v-model="targetP.id" class="" :disabled="true"><template slot="prepend">编&nbsp;&nbsp;&nbsp;&nbsp;号</template></el-input>
+                    </el-form-item>
+                    <el-form-item label="" prop="name">
+                        <el-input v-model="targetP.name" class="" maxlength="64"><template slot="prepend">参数名</template></el-input>
+                    </el-form-item>
+                    <el-form-item label="" prop="value">
+                        <el-input v-model="targetP.value" class="" maxlength="512"><template slot="prepend">参数值</template></el-input>
+                    </el-form-item>
+                    <el-form-item label="" prop="type">
+                        <el-select v-model="targetP.type" placeholder="请选择参数位置" size="mini" clearable style="width: 100%;">
+                            <el-option
+                                    v-for="(k,v) in typeOptions"
+                                    :key="k"
+                                    :value="v"
+                                    :label="k">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
+                <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisiblePP = false">取 消</el-button>
+                <el-button type="primary" @click="onSubmitP('targetFromP')">保 存</el-button>
+                </span>
+            </el-dialog>
+        </el-dialog>
+
+        <el-dialog title="请求增改" :visible.sync="dialogVisibleR" width="40%" center>
+            <el-form :model="target" v-if="target" :rules="rules" label-width="70px" ref="targetFrom" size="small" label-position="right">
+                <el-form-item label="编号：" v-if="target.id">
+                    <el-input v-model="target.id" class="" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="名称：" prop="name">
+                    <el-input v-model="target.name" class="" maxlength="64"></el-input>
+                </el-form-item>
+                <el-form-item label="URL：" prop="url">
+                    <el-input v-model="target.url" class="" maxlength="512"></el-input>
+                </el-form-item>
+                <el-form-item label="备注：" prop="remark">
+                    <el-input v-model="target.remark" class="" maxlength="128"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisibleR = false">取 消</el-button>
+                <el-button type="primary" @click="onSubmit('targetFrom')">保 存</el-button>
+            </span>
+        </el-dialog>
 
     </div>
 </template>
 
 <script>
-    import {fetchList, remove} from "../../api/data";
+    import {fetchList, remove, fetchListP, saveRequest, saveRequestParameter, removeParameter} from "../../api/data";
     const defaultListQuery = {
+        page: 1,
+        size: 10,
+        prop: 'id',
+        order: 'descending'
+    };
+
+    const defaultListQueryP = {
         page: 1,
         size: 10,
         prop: 'id',
@@ -68,10 +183,60 @@
             return{
                 listQuery: Object.assign({}, defaultListQuery),
                 target: null,
+                targetP: null,
                 dialogVisible:false,
+                dialogVisibleR: false,
+                dialogVisiblePP: false,
                 list: null,
                 total: null,
-                listLoading: false
+                listLoading: false,
+                targetFrom: {
+                    name: '',
+                    url: '',
+                    remark: ''
+                },
+                rules: {
+                    name: [
+                        { required: true, message: '请输入名称', trigger: 'change' },
+                        { min: 1, max: 64, message: '长度在 1 到 64 个字符', trigger: 'change' }
+                    ],
+                    url: [
+                        { required: true, message: '请输入URL', trigger: 'change' },
+                        { min: 1, max: 512, message: '长度在 1 到 512 个字符', trigger: 'change' }
+                    ],
+                    remark: [
+                        { min: 1, max: 128, message: '长度在 1 到 128 个字符', trigger: 'change' }
+                    ]
+                },
+
+                typeOptions: {
+                    '1': "请求头",
+                    '2': "URL参数",
+                    '3': "筛选条件",
+                    '4': "字段映射"
+                },
+                listQueryP: Object.assign({}, defaultListQueryP),
+                listLoadingP: false,
+                listP: null,
+                totalP: null,
+                targetFromP: {
+                    name: '',
+                    value: '',
+                    type: ''
+                },
+                rulesP: {
+                    name: [
+                        { required: true, message: '请输入参数名', trigger: 'change' },
+                        { min: 1, max: 64, message: '长度在 1 到 64 个字符', trigger: 'change' }
+                    ],
+                    value: [
+                        { required: true, message: '请输入参数值', trigger: 'change' },
+                        { min: 1, max: 512, message: '长度在 1 到 512 个字符', trigger: 'change' }
+                    ],
+                    type: [
+                        { required: true, message: '请选择参数位置', trigger: 'change' }
+                    ],
+                },
             }
         },
         methods:{
@@ -106,7 +271,18 @@
             },
             handleEdit(data) {
                 this.target = Object.assign({}, data);
+                this.dialogVisibleR = true;
+            },
+            resetParams() {
+                let order = this.listQuery;
+                this.listQuery = Object.assign({}, defaultListQuery);
+                this.getList(true, order);
+            },
+            handleParameters(data) {
+                defaultListQueryP.requestId = data.id;
+                this.listQueryP = Object.assign({}, defaultListQueryP);
                 this.dialogVisible = true;
+                this.getListP();
             },
             handleDelete(data) {
                 this.$confirm(`确定要删除该条数据（名称:${data.name}）吗?`, '提示', {
@@ -120,11 +296,114 @@
                             type: 'success',
                             duration: 1000
                         });
-                        this.dialogVisible = false;
                         this.getList();
                     })
                 })
-            }
+            },
+            onSubmit(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        saveRequest({...this.target}).then(() => {
+                            this.$refs[formName].resetFields();
+                            this.$message({
+                                message: '操作成功',
+                                type: 'success',
+                                duration: 1000
+                            });
+                            this.dialogVisibleR = false;
+                            this.getList();
+                        })
+                    } else {
+                        this.$message({
+                            message: '参数验证失败',
+                            type: 'error',
+                            duration: 1000
+                        });
+                        return false;
+                    }
+                });
+            },
+
+            getListP(manual, order) {
+                this.listLoadingP = true;
+                if (manual) {
+                    this.listQueryP.page = 1;
+                }
+                if (order) {
+                    this.listQueryP.order = order.order;
+                    this.listQueryP.prop = order.prop;
+                }
+                fetchListP(this.listQueryP).then(response => {
+                    this.listLoadingP = false;
+                    const {content,totalElements} = response;
+                    this.listP = content;
+                    this.totalP = Number.parseInt(totalElements);
+                })
+            },
+            resetParamsP() {
+                let order = this.listQueryP;
+                this.listQueryP = Object.assign({}, defaultListQueryP);
+                this.getListP(true, order);
+            },
+            handleEditP(data) {
+                this.targetP = Object.assign({requestId: defaultListQueryP.requestId}, data);
+                this.dialogVisiblePP = true;
+            },
+            handleDeleteP(data) {
+                this.$confirm(`确定要删除该数据（编号:${data.id}）吗?`, '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    removeParameter(data).then(() => {
+                        this.$message({
+                            message: '删除成功',
+                            type: 'success',
+                            duration: 1000
+                        });
+                        this.getListP();
+                    })
+                })
+            },
+            changeSortP(data) {
+                this.getListP(true, data);
+            },
+            translateType(val) {
+                return this.typeOptions[val.type];
+            },
+            handleSizeChangeP(val) {
+                this.listQueryP.page = 1;
+                this.listQueryP.size = val;
+                defaultListQueryP.size = val;
+                this.getListP(true);
+            },
+            handleCurrentChangeP(val) {
+                this.listQueryP.page = val;
+                this.getListP();
+            },
+            onSubmitP(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        saveRequestParameter({...this.targetP}).then(() => {
+                            this.$refs[formName].resetFields();
+                            this.$message({
+                                message: '操作成功',
+                                type: 'success',
+                                duration: 1000
+                            });
+                            this.dialogVisiblePP = false;
+                            this.getListP();
+                        })
+                    } else {
+                        this.$message({
+                            message: '参数验证失败',
+                            type: 'error',
+                            duration: 1000
+                        });
+                        return false;
+                    }
+                });
+            },
         },
         created() {
             this.getList();

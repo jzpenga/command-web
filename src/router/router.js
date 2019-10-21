@@ -183,6 +183,18 @@ export const  constantRoutes =[
             }
         ]
     },
+    {
+        path: '/data',
+        component: Layout,
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/data'),
+                name: '数据请求管理',
+                meta: { title: '数据请求管理', icon: 'role', affix: true }
+            }
+        ]
+    },
   ];
 
 
