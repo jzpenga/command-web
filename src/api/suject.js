@@ -3,11 +3,11 @@ import request from '@/utils/request'
 
 /**
  *获取专题树
- * /command/subject/subjectTree
+ * /command/subject/subjectTreeNoAuth
  */
 export function subjectTree(id) {
   return request({
-    url: '/command/subject/subjectTree?parentId='+id,
+    url: '/command/subject/subjectTreeNoAuth?parentId='+id,
     method: 'get'
   })
 }
