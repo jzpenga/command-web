@@ -97,9 +97,7 @@
 
     const defaultListQuery = {
         page: 1,
-        size: 10,
-        prop: 'id',
-        order: 'descending'
+        size: 10
     };
 
     export default {
