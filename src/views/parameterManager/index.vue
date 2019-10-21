@@ -2,17 +2,18 @@
     <div>
 
         <el-card class="operate-container" shadow="never">
-            <el-row :gutter="10">
-                <el-col :span="4"><el-input placeholder="请输入参数名" size="mini" v-model="listQuery.name" clearable><template slot="prepend">参数名</template></el-input></el-col>
-                <el-col :span="4"><el-input placeholder="请输入参数值" size="mini" v-model="listQuery.value" clearable><template slot="prepend">参数值</template></el-input></el-col>
-                <el-col :span="4"><el-input placeholder="请输入所属用户编号" size="mini" v-model="listQuery.userId" clearable><template slot="prepend">用户编号</template></el-input></el-col>
-                <el-col :span="3">
-                    <el-select v-model="listQuery.type" placeholder="参数类型" size="mini" clearable>
+            <el-row :gutter="10" type="flex" justify="center" style="flex-wrap: wrap;">
+                <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入参数名" size="mini" v-model="listQuery.name" clearable><template slot="prepend">参数名</template></el-input></el-col>
+                <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入参数值" size="mini" v-model="listQuery.value" clearable><template slot="prepend">参数值</template></el-input></el-col>
+                <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入所属用户编号" size="mini" v-model="listQuery.userId" clearable><template slot="prepend">用户编号</template></el-input></el-col>
+                <el-col :lg="6" :md="8" :sm="12">
+                    <el-select v-model="listQuery.type" placeholder="参数类型" size="mini" clearable style="width: 100%">
                         <el-option v-for="(k,v) in typeOptions" :key="k" :value="v" :label="k"></el-option>
                     </el-select>
                 </el-col>
-
-                <el-col :span="9">
+            </el-row>
+            <el-row >
+                <el-col style="text-align: center">
                     <el-button size="mini" type="primary" icon="el-icon-search" @click="getList(true)">查询</el-button>
                     <el-button size="mini" type="default" icon="el-icon-close" @click="resetParams()">重置</el-button>
                     <el-button size="mini" type="primary" icon="el-icon-plus" @click="handleEdit({})" plain>添加</el-button>

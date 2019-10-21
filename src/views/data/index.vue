@@ -1,12 +1,14 @@
 <template>
     <div>
         <el-card class="operate-container" shadow="never">
-            <el-row :gutter="10">
-                <el-col :span="4"><el-input placeholder="请输入名称" size="mini" v-model="listQuery.name" clearable><template slot="prepend">名称</template></el-input></el-col>
-                <el-col :span="4"><el-input placeholder="请输入URL" size="mini" v-model="listQuery.url" clearable><template slot="prepend">URL</template></el-input></el-col>
-                <el-col :span="4"><el-input placeholder="请输入备注" size="mini" v-model="listQuery.remark" clearable><template slot="prepend">备注</template></el-input></el-col>
+            <el-row :gutter="10" type="flex" justify="center" style="flex-wrap: wrap;">
+                <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入名称" size="mini" v-model="listQuery.name" clearable><template slot="prepend">名称</template></el-input></el-col>
+                <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入URL" size="mini" v-model="listQuery.url" clearable><template slot="prepend">URL</template></el-input></el-col>
+                <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入备注" size="mini" v-model="listQuery.remark" clearable><template slot="prepend">备注</template></el-input></el-col>
 
-                <el-col :span="6">
+            </el-row>
+            <el-row >
+                <el-col style="text-align: center">
                     <el-button size="mini" type="primary" icon="el-icon-search" @click="getList(true)">查询</el-button>
                     <el-button size="mini" type="default" icon="el-icon-close" @click="resetParams()">重置</el-button>
                     <el-button size="mini" type="primary" icon="el-icon-plus" @click="handleEdit({})" plain>添加</el-button>
@@ -55,17 +57,18 @@
 
         <el-dialog title="请求参数管理" :visible.sync="dialogVisible" width="90%" center>
             <el-card class="operate-container" shadow="never">
-                <el-row :gutter="10">
-                    <el-col :span="4"><el-input size="mini" v-model="listQueryP.requestId" clearable :disabled="true"><template slot="prepend">编号</template></el-input></el-col>
-                    <el-col :span="4"><el-input placeholder="请输入参数名" size="mini" v-model="listQueryP.name" clearable><template slot="prepend">参数名</template></el-input></el-col>
-                    <el-col :span="4"><el-input placeholder="请输入参数值" size="mini" v-model="listQueryP.url" clearable><template slot="prepend">参数值</template></el-input></el-col>
-                    <el-col :span="3">
-                        <el-select v-model="listQueryP.type" placeholder="参数位置" size="mini" width="100%" clearable>
+                <el-row :gutter="10" type="flex" justify="center" style="flex-wrap: wrap;">
+                    <el-col :lg="6" :md="8" :sm="12"><el-input size="mini" v-model="listQueryP.requestId" clearable :disabled="true"><template slot="prepend">编号</template></el-input></el-col>
+                    <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入参数名" size="mini" v-model="listQueryP.name" clearable><template slot="prepend">参数名</template></el-input></el-col>
+                    <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入参数值" size="mini" v-model="listQueryP.url" clearable><template slot="prepend">参数值</template></el-input></el-col>
+                    <el-col :lg="6" :md="8" :sm="12">
+                        <el-select v-model="listQueryP.type" placeholder="参数位置" size="mini" style="width: 100%" clearable>
                             <el-option v-for="(k,v) in typeOptions" :key="k" :value="v" :label="k"></el-option>
                         </el-select>
                     </el-col>
-
-                    <el-col :span="8">
+                </el-row>
+                <el-row>
+                    <el-col style="text-align: center">
                         <el-button size="mini" type="primary" icon="el-icon-search" @click="getListP(true)">查询</el-button>
                         <el-button size="mini" type="default" icon="el-icon-close" @click="resetParamsP()">重置</el-button>
                         <el-button size="mini" type="primary" icon="el-icon-plus" @click="handleEditP({})" plain>添加</el-button>
@@ -138,18 +141,18 @@
         </el-dialog>
 
         <el-dialog title="请求增改" :visible.sync="dialogVisibleR" width="40%" center>
-            <el-form :model="target" v-if="target" :rules="rules" label-width="70px" ref="targetFrom" size="small" label-position="right">
-                <el-form-item label="编号：" v-if="target.id">
-                    <el-input v-model="target.id" class="" :disabled="true"></el-input>
+            <el-form :model="target" v-if="target" :rules="rules" label-width="0px" ref="targetFrom" size="small" label-position="right">
+                <el-form-item label="" v-if="target.id">
+                    <el-input v-model="target.id" class="" :disabled="true"><template slot="prepend">编号</template></el-input>
                 </el-form-item>
-                <el-form-item label="名称：" prop="name">
-                    <el-input v-model="target.name" class="" maxlength="64"></el-input>
+                <el-form-item label="" prop="name">
+                    <el-input v-model="target.name" class="" maxlength="64"><template slot="prepend">名称</template></el-input>
                 </el-form-item>
-                <el-form-item label="URL：" prop="url">
-                    <el-input v-model="target.url" class="" maxlength="512"></el-input>
+                <el-form-item label="" prop="url">
+                    <el-input v-model="target.url" class="" maxlength="512"><template slot="prepend">URL</template></el-input>
                 </el-form-item>
-                <el-form-item label="备注：" prop="remark">
-                    <el-input v-model="target.remark" class="" maxlength="128"></el-input>
+                <el-form-item label="" prop="remark">
+                    <el-input v-model="target.remark" class="" maxlength="128"><template slot="prepend">备注</template></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
