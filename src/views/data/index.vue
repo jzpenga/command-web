@@ -55,10 +55,10 @@
             </el-pagination>
         </div>
 
-        <el-dialog title="请求参数管理" :visible.sync="dialogVisible" width="90%" center>
+        <el-dialog title="请求参数管理" :visible.sync="dialogVisible" center fullscreen>
             <el-card class="operate-container" shadow="never">
                 <el-row :gutter="10" type="flex" justify="center" style="flex-wrap: wrap;">
-                    <el-col :lg="6" :md="8" :sm="12"><el-input size="mini" v-model="listQueryP.requestId" clearable :disabled="true"><template slot="prepend">编号</template></el-input></el-col>
+                    <el-col :lg="6" :md="8" :sm="12"><el-input size="mini" v-model="listQueryP.requestId" clearable :disabled="true"><template slot="prepend">请求编号</template></el-input></el-col>
                     <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入参数名" size="mini" v-model="listQueryP.name" clearable><template slot="prepend">参数名</template></el-input></el-col>
                     <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入参数值" size="mini" v-model="listQueryP.url" clearable><template slot="prepend">参数值</template></el-input></el-col>
                     <el-col :lg="6" :md="8" :sm="12">
@@ -72,6 +72,7 @@
                         <el-button size="mini" type="primary" icon="el-icon-search" @click="getListP(true)">查询</el-button>
                         <el-button size="mini" type="default" icon="el-icon-close" @click="resetParamsP()">重置</el-button>
                         <el-button size="mini" type="primary" icon="el-icon-plus" @click="handleEditP({})" plain>添加</el-button>
+                        <el-button size="mini" type="success" icon="el-icon-back" @click="dialogVisible = false" >返 回</el-button>
                     </el-col>
                 </el-row>
             </el-card>
@@ -111,16 +112,20 @@
                 </el-pagination>
             </div>
 
+            <span slot="footer" class="dialog-footer">
+
+            </span>
+
             <el-dialog title="请求参数增改" :visible.sync="dialogVisiblePP" width="40%" center append-to-body>
                 <el-form :model="targetP" v-if="targetP" :rules="rulesP" label-width="0px" ref="targetFromP" size="small" label-position="right">
                     <el-form-item label="" v-if="targetP.id">
-                        <el-input v-model="targetP.id" class="" :disabled="true"><template slot="prepend">编&nbsp;&nbsp;&nbsp;&nbsp;号</template></el-input>
+                        <el-input v-model="targetP.id" class="" size="mini" :disabled="true"><template slot="prepend">编&nbsp;&nbsp;&nbsp;&nbsp;号</template></el-input>
                     </el-form-item>
                     <el-form-item label="" prop="name">
-                        <el-input v-model="targetP.name" class="" maxlength="64"><template slot="prepend">参数名</template></el-input>
+                        <el-input v-model="targetP.name" class=" " size="mini" maxlength="64"><template slot="prepend">参数名</template></el-input>
                     </el-form-item>
                     <el-form-item label="" prop="value">
-                        <el-input v-model="targetP.value" class="" maxlength="512"><template slot="prepend">参数值</template></el-input>
+                        <el-input v-model="targetP.value" class="" size="mini" maxlength="512"><template slot="prepend">参数值</template></el-input>
                     </el-form-item>
                     <el-form-item label="" prop="type">
                         <el-select v-model="targetP.type" placeholder="请选择参数位置" size="mini" clearable style="width: 100%;">
@@ -134,30 +139,30 @@
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisiblePP = false">取 消</el-button>
-                <el-button type="primary" @click="onSubmitP('targetFromP')">保 存</el-button>
+                <el-button @click="dialogVisiblePP = false" size="mini">取 消</el-button>
+                <el-button type="primary" @click="onSubmitP('targetFromP')" size="mini">保 存</el-button>
                 </span>
             </el-dialog>
         </el-dialog>
 
-        <el-dialog title="请求增改" :visible.sync="dialogVisibleR" width="40%" center>
+        <el-dialog title="请求增改" :visible.sync="dialogVisibleR" width="40%" center >
             <el-form :model="target" v-if="target" :rules="rules" label-width="0px" ref="targetFrom" size="small" label-position="right">
                 <el-form-item label="" v-if="target.id">
-                    <el-input v-model="target.id" class="" :disabled="true"><template slot="prepend">编号</template></el-input>
+                    <el-input v-model="target.id" class="" size="mini" :disabled="true"><template slot="prepend">编号</template></el-input>
                 </el-form-item>
                 <el-form-item label="" prop="name">
-                    <el-input v-model="target.name" class="" maxlength="64"><template slot="prepend">名称</template></el-input>
+                    <el-input v-model="target.name" class="" size="mini" maxlength="64"><template slot="prepend">名称</template></el-input>
                 </el-form-item>
                 <el-form-item label="" prop="url">
-                    <el-input v-model="target.url" class="" maxlength="512"><template slot="prepend">URL</template></el-input>
+                    <el-input v-model="target.url" class="" size="mini" maxlength="512"><template slot="prepend">URL</template></el-input>
                 </el-form-item>
                 <el-form-item label="" prop="remark">
-                    <el-input v-model="target.remark" class="" maxlength="128"><template slot="prepend">备注</template></el-input>
+                    <el-input v-model="target.remark" class="" size="mini" maxlength="128"><template slot="prepend">备注</template></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisibleR = false">取 消</el-button>
-                <el-button type="primary" @click="onSubmit('targetFrom')">保 存</el-button>
+                <el-button @click="dialogVisibleR = false" size="mini">取 消</el-button>
+                <el-button type="primary" @click="onSubmit('targetFrom')" size="mini">保 存</el-button>
             </span>
         </el-dialog>
 

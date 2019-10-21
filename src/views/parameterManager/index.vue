@@ -57,18 +57,18 @@
         </div>
 
         <el-dialog title="参数增改" :visible.sync="dialogVisible" width="40%" center>
-            <el-form :model="target" v-if="target" :rules="rules" label-width="120px" ref="targetFrom" size="small" label-position="right">
-                <el-form-item label="编号：" v-if="target.id">
-                    <el-input v-model="target.id" class="" :disabled="true"></el-input>
+            <el-form :model="target" v-if="target" :rules="rules" label-width="0" ref="targetFrom" size="small" label-position="right">
+                <el-form-item label="" v-if="target.id">
+                    <el-input v-model="target.id" size="mini" class="" :disabled="true"><template slot="prepend">编号</template></el-input>
                 </el-form-item>
-                <el-form-item label="参数名：" prop="name">
-                    <el-input v-model="target.name" class="" maxlength="64"></el-input>
+                <el-form-item label="" prop="name">
+                    <el-input v-model="target.name" size="mini" class="" maxlength="64"><template slot="prepend">参数名</template></el-input>
                 </el-form-item>
-                <el-form-item label="参数值：" prop="value">
-                    <el-input v-model="target.value" class="" maxlength="256"></el-input>
+                <el-form-item label="" prop="value">
+                    <el-input v-model="target.value" size="mini" class="" maxlength="256"><template slot="prepend">参数值</template></el-input>
                 </el-form-item>
-                <el-form-item label="参数类型：" prop="type">
-                    <el-select v-model="target.type" placeholder="参数类型" size="mini" clearable>
+                <el-form-item label="" prop="type">
+                    <el-select v-model="target.type" placeholder="请选择参数类型" size="mini" clearable style="width: 100%;">
                         <el-option
                                 v-for="(k,v) in typeOptions"
                                 :key="k"
@@ -77,13 +77,13 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="所属用户编号：" prop="userId">
-                    <el-input v-model="target.userId" class="" type="number" maxlength="20"></el-input>
+                <el-form-item label="" prop="userId">
+                    <el-input v-model.number="target.userId" size="mini" class="" maxlength="20"><template slot="prepend">用户编号</template></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="onSubmit('targetFrom')">保 存</el-button>
+                <el-button @click="dialogVisible = false" size="mini">取 消</el-button>
+                <el-button type="primary" @click="onSubmit('targetFrom')" size="mini">保 存</el-button>
             </span>
         </el-dialog>
     </div>
