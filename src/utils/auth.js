@@ -44,7 +44,7 @@ export function loginUe() {
                 ajax1.onreadystatechange = function () {
                     if (ajax1.readyState==4 &&ajax1.status==200) {
                         var iframe = document.createElement("iframe");
-                        iframe.src = "/analystui/?lan=en#/project";
+                        iframe.src = "/analystui/?lan=zh#/project";
                         iframe.style.display = "none";
                         document.body.appendChild(iframe);
                     }
@@ -53,7 +53,11 @@ export function loginUe() {
         }
     }
     ff();
-    setInterval(ff, 1000*60*10);
+    setInterval(function () {
+        let ajax = new XMLHttpRequest();
+        ajax.open('get','/analystui/?lan=zh#/project');
+        ajax.send();
+    }, 1000*60*10);
 }
 
 export function getUeToken() {
