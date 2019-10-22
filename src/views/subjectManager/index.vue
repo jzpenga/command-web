@@ -171,8 +171,7 @@
         computed:{
             isCategoryItem(){
                 return function(data){
-                    let path = data.path;
-                    return path.split("-").length<2
+                    return data.level < 2;
                 };
             },
         },
@@ -198,7 +197,7 @@
             showEditDialog(node, data, isEdit,isEditCategory){
                 this.isEdit = isEdit;
                 this.isEditCategory = isEditCategory;
-                if (isEdit && data.path.split("-").length === 2){
+                if (isEdit && data.level === 2){
                     this.isEditCategory = true;
                 }
                 if (this.isEdit){
