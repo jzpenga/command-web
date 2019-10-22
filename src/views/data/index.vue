@@ -55,7 +55,7 @@
             </el-pagination>
         </div>
 
-        <el-dialog title="请求参数管理" :visible.sync="dialogVisible" center fullscreen>
+        <el-dialog title="请求参数管理" :visible.sync="dialogVisible" center width="90%">
             <el-card class="operate-container" shadow="never">
                 <el-row :gutter="10" type="flex" style="flex-wrap: wrap;">
                     <el-col :lg="6" :md="8" :sm="12"><el-input size="mini" v-model="listQueryP.requestId" clearable :disabled="true"><template slot="prepend">请求编号</template></el-input></el-col>
