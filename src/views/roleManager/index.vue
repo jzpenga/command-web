@@ -1,30 +1,42 @@
 <template>
     <div>
-<!--        <el-button type="text" @click="dialogVisible = true">点击打开 Dialog</el-button>-->
 
         <el-card class="operate-container" shadow="never">
-            <i class="el-icon-tickets"></i>
-            <span>数据列表</span>
-            <el-button size="mini" class="btn-add" @click="handleAdd()">添加角色</el-button>
+            <el-row :gutter="10" type="flex" style="flex-wrap: wrap;">
+                <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入编号" size="mini" v-model="listQuery.id" clearable><template slot="prepend">编号</template></el-input></el-col>
+                <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入角色名称" size="mini" v-model="listQuery.name" clearable><template slot="prepend">名称</template></el-input></el-col>
+                <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入角色描述" size="mini" v-model="listQuery.description" clearable><template slot="prepend">描述</template></el-input></el-col>
+                <el-col :lg="6" :md="8" :sm="12">
+                    <el-date-picker
+                            size="mini"
+                            v-model="listQuery.createTime"
+                            type="daterange"
+                            align="right"
+                            unlink-panels
+                            start-placeholder="创建日期开始"
+                            end-placeholder="创建日期结束"
+                            :picker-options="pickerOptions"
+                            value-format="MM/dd/yyyy"
+                            style="width: 100%;">
+                    </el-date-picker>
+                </el-col>
+            </el-row>
+            <el-row >
+                <el-col style="text-align: center">
+                    <el-button size="mini" type="primary" icon="el-icon-search" @click="getList(true)">查询</el-button>
+                    <el-button size="mini" type="default" icon="el-icon-close" @click="resetParams()">重置</el-button>
+                    <el-button size="mini" type="primary" icon="el-icon-plus" @click="handleAdd()" plain>添加</el-button>
+                </el-col>
+            </el-row>
         </el-card>
+
         <div class="table-container">
-            <el-table ref="userRoleTable"
-                      :data="list"
-                      style="width: 100%;"
-                      @selection-change="handleSelectionChange"
-                      v-loading="listLoading" border>
-                <el-table-column label="编号" width="120" align="center">
-                    <template slot-scope="scope">{{scope.row.id}}</template>
-                </el-table-column>
-                <el-table-column label="角色名称" align="center">
-                    <template slot-scope="scope">{{scope.row.name}}</template>
-                </el-table-column>
-                <el-table-column label="角色描述" align="center">
-                    <template slot-scope="scope">{{scope.row.description}}</template>
-                </el-table-column>
-                <el-table-column label="创建时间" align="center">
-                    <template slot-scope="scope">{{scope.row.createTime}}</template>
-                </el-table-column>
+            <el-table :data="list" style="width: 100%;" v-loading="listLoading" size="mini" stripe border
+                      @sort-change="changeSort">
+                <el-table-column label="编号" width="160" align="center" sortable="custom" prop="id"></el-table-column>
+                <el-table-column label="角色名称" width="140" align="left" sortable="custom" prop="name"></el-table-column>
+                <el-table-column label="角色描述" align="left" show-overflow-tooltip prop="description"></el-table-column>
+                <el-table-column label="创建时间" width="160" align="center" sortable="custom" prop="createTime"></el-table-column>
                 <el-table-column label="操作" width="120" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini"
@@ -41,14 +53,14 @@
         </div>
         <div class="pagination-container">
             <el-pagination
-            background
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            layout="total, sizes,prev, pager, next,jumper"
-            :page-size="listQuery.pageSize"
-            :page-sizes="[5,10,15]"
-            :current-page.sync="listQuery.pageNum"
-            :total="total">
+                    background
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    layout="total, sizes,prev, pager, next,jumper"
+                    :page-size="listQuery.size"
+                    :page-sizes="[5,10,15]"
+                    :current-page.sync="listQuery.page"
+                    :total="total">
             </el-pagination>
         </div>
     </div>
@@ -57,13 +69,11 @@
 
 <script>
     import {fetchList,deleteRole} from "../../api/userRole";
+    import {config} from "../../utils/config";
 
     const defaultListQuery = {
-        pageNum: 1,
-        pageSize: 5,
-        name: null,
-        type: null,
-        endTime:null
+        page: 1,
+        size: 10
     };
     export default {
         name: "index",
@@ -75,12 +85,7 @@
                 total: null,
                 listLoading: false,
                 multipleSelection: [],
-                operates: [
-                    {
-                        label: "删除",
-                        value: 0
-                    }
-                ]
+                pickerOptions: config.dateRangePickDay,
             }
         },
         methods:{
@@ -97,17 +102,39 @@
                 this.$router.push({path: '/roleManager/editUserRole', query: {id: row.id}})
             },
             handleSizeChange(val) {
-                this.listQuery.pageNum = 1;
-                this.listQuery.pageSize = val;
-                this.getList();
+                this.listQuery.page = 1;
+                this.listQuery.size = val;
+                defaultListQuery.size = val;
+                this.getList(true);
             },
             handleCurrentChange(val) {
-                this.listQuery.pageNum = val;
+                this.listQuery.page = val;
                 this.getList();
             },
-            getList() {
+            resetParams() {
+                let order = this.listQuery;
+                this.listQuery = Object.assign({}, defaultListQuery);
+                this.getList(true, order);
+            },
+            changeSort(data) {
+                this.getList(true, data);
+            },
+            getList(manual, order) {
                 this.listLoading = true;
-                fetchList(this.listQuery).then(response => {
+                if (manual) {
+                    this.listQuery.page = 1;
+                }
+                if (order) {
+                    this.listQuery.order = order.order;
+                    this.listQuery.prop = order.prop;
+                }
+                let params = Object.assign({}, this.listQuery);
+                if (params.createTime) {
+                    params.createTime1 = params.createTime[0];
+                    params.createTime2 = params.createTime[1];
+                    delete params.createTime;
+                }
+                fetchList(params).then(response => {
                     this.listLoading = false;
                     const {content,totalElements} = response;
                     this.list = content;
@@ -120,7 +147,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    deleteRole(ids).then(response=>{
+                    deleteRole(ids).then(() =>{
                         this.getList();
                         this.$message({
                             type: 'success',

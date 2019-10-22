@@ -7,8 +7,9 @@ import request from '@/utils/request'
  */
 export function fetchList(data) {
   return request({
-    url: `/command/user/roleList?page=${data.pageNum}&rows=${data.pageSize}`,
-    method: 'get'
+      url: `/command/user/roleList`,
+      method: 'get',
+      params: data
   })
 }
 

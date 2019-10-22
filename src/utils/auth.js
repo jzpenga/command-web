@@ -55,7 +55,7 @@ export function loginUe() {
     ff();
     setInterval(function () {
         let ajax = new XMLHttpRequest();
-        ajax.open('get','/analystui/?lan=zh#/project');
+        ajax.open('get','/analystui/?lan=zh&_t=' + new Date().getTime() + '#/project');
         ajax.send();
     }, 1000*60*10);
 }

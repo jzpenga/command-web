@@ -7,6 +7,20 @@
                 <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入昵称" size="mini" v-model="listQuery.nickName" clearable><template slot="prepend">昵称</template></el-input></el-col>
                 <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入电话" size="mini" v-model="listQuery.phone" clearable><template slot="prepend">电话</template></el-input></el-col>
                 <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入邮箱" size="mini" v-model="listQuery.email" clearable><template slot="prepend">邮箱</template></el-input></el-col>
+                <el-col :lg="6" :md="8" :sm="12">
+                    <el-date-picker
+                            size="mini"
+                            v-model="listQuery.createTime"
+                            type="daterange"
+                            align="right"
+                            unlink-panels
+                            start-placeholder="创建日期开始"
+                            end-placeholder="创建日期结束"
+                            :picker-options="pickerOptions"
+                            value-format="MM/dd/yyyy"
+                            style="width: 100%;">
+                    </el-date-picker>
+                </el-col>
             </el-row>
             <el-row >
                 <el-col style="text-align: center">
@@ -94,6 +108,7 @@
 <script>
     import {fetchList, deleteUser} from "../../api/user";
     import BindUserUrl from './components/BindUserUrl';
+    import {config} from "../../utils/config";
 
     const defaultListQuery = {
         page: 1,
@@ -113,12 +128,7 @@
                 total: null,
                 listLoading: false,
                 multipleSelection: [],
-                operates: [
-                    {
-                        label: "删除",
-                        value: 0
-                    }
-                ]
+                pickerOptions: config.dateRangePickDay,
             }
         },
         components:{
@@ -170,7 +180,13 @@
                     this.listQuery.order = order.order;
                     this.listQuery.prop = order.prop;
                 }
-                fetchList(this.listQuery).then(response => {
+                let params = Object.assign({}, this.listQuery);
+                if (params.createTime) {
+                    params.createTime1 = params.createTime[0];
+                    params.createTime2 = params.createTime[1];
+                    delete params.createTime;
+                }
+                fetchList(params).then(response => {
                     this.listLoading = false;
                     const {content, totalElements} = response;
                     this.list = content;
