@@ -55,7 +55,7 @@
             </el-pagination>
         </div>
 
-        <el-dialog title="请求参数管理" :visible.sync="dialogVisible" center width="90%">
+        <el-dialog title="请求参数管理" :visible.sync="dialogVisible" center width="90%" top="5vh">
             <el-card class="operate-container" shadow="never">
                 <el-row :gutter="10" type="flex" style="flex-wrap: wrap;">
                     <el-col :lg="6" :md="8" :sm="12"><el-input size="mini" v-model="listQueryP.requestId" clearable :disabled="true"><template slot="prepend">请求编号</template></el-input></el-col>
@@ -72,7 +72,7 @@
                         <el-button size="mini" type="primary" icon="el-icon-search" @click="getListP(true)">查询</el-button>
                         <el-button size="mini" type="default" icon="el-icon-close" @click="resetParamsP()">重置</el-button>
                         <el-button size="mini" type="primary" icon="el-icon-plus" @click="handleEditP({})" plain>添加</el-button>
-                        <el-button size="mini" type="success" icon="el-icon-back" @click="dialogVisible = false" >返 回</el-button>
+                        <el-button size="mini" type="success" icon="el-icon-back" @click="dialogVisible = false" >关闭</el-button>
                     </el-col>
                 </el-row>
             </el-card>
