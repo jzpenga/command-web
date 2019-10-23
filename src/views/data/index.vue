@@ -12,7 +12,7 @@
                 <el-col style="text-align: center">
                     <el-button size="mini" type="primary" icon="el-icon-search" @click="getList(true)">查询</el-button>
                     <el-button size="mini" type="default" icon="el-icon-close" @click="resetParams()">重置</el-button>
-                    <el-button size="mini" type="primary" icon="el-icon-plus" @click="handleEdit({})" plain>添加</el-button>
+                    <el-button size="mini" type="primary" icon="el-icon-plus" @click="handleEdit(target)" plain>添加</el-button>
                 </el-col>
             </el-row>
         </el-card>
@@ -37,6 +37,10 @@
                         <el-button size="mini"
                                    type="text"
                                    @click="handleCopy(scope.row)">复制
+                        </el-button>
+                        <el-button size="mini"
+                                   type="text"
+                                   @click="handlePreview(scope.row)">预览
                         </el-button>
                         <el-button size="mini"
                                    type="text"
@@ -171,6 +175,12 @@
             </span>
         </el-dialog>
 
+        <el-dialog title="预览结果" :visible.sync="previewDataFlag" width="40%" top="5vh" center >
+            <pre style="overflow-y: auto; max-height: 500px;">{{previewData}}</pre>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="previewData = null;previewDataFlag = false;" size="mini">关 闭</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -182,7 +192,7 @@
         saveRequest,
         saveRequestParameter,
         removeParameter,
-        copy
+        copy, preview
     } from "../../api/data";
     const defaultListQuery = {
         page: 1,
@@ -204,6 +214,8 @@
                 dialogVisible:false,
                 dialogVisibleR: false,
                 dialogVisiblePP: false,
+                previewDataFlag: false,
+                previewData: null,
                 list: null,
                 total: null,
                 listLoading: false,
@@ -304,6 +316,17 @@
                             duration: 1000
                         });
                         this.getList();
+                    })
+                })
+            },
+            handlePreview(data) {
+                this.$prompt('请输入url参数', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消'
+                }).then(({ value } ) => {
+                    preview(data, value).then((response) => {
+                        this.previewDataFlag = true;
+                        this.previewData = response;
                     })
                 })
             },

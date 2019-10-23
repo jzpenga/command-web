@@ -1,4 +1,4 @@
-import request from '@/utils/request'
+import request from "../utils/request";
 
 /**
  *  数据请求列表获取
@@ -43,6 +43,18 @@ export function copy(data) {
     return request({
         url: `command/data/request/copy?id=${data.id}`,
         method: 'post'
+    })
+}
+
+/**
+ *  数据请求预览
+ * /command/data/request/delete
+ */
+export function preview(data, params) {
+    return request({
+        url: `command/data/receiveData?_request=${data.name}&${params}`,
+        method: 'post',
+        originResponse: true
     })
 }
 
