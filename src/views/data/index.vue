@@ -64,7 +64,7 @@
             </el-pagination>
         </div>
 
-        <el-dialog title="请求参数管理" :visible.sync="dialogVisible" center width="90%" top="5vh">
+        <el-dialog title="请求参数管理" :visible.sync="dialogVisible" center width="90%" top="5vh" :close-on-click-modal="false">
             <el-card class="operate-container" shadow="never">
                 <el-row :gutter="10" type="flex" style="flex-wrap: wrap;">
                     <el-col :lg="6" :md="8" :sm="12"><el-input size="mini" v-model="listQueryP.requestId" clearable :disabled="true"><template slot="prepend">请求编号</template></el-input></el-col>
@@ -125,7 +125,7 @@
 
             </span>
 
-            <el-dialog title="请求参数增改" :visible.sync="dialogVisiblePP" width="40%" center append-to-body>
+            <el-dialog title="请求参数增改" :visible.sync="dialogVisiblePP" width="40%" center append-to-body :close-on-click-modal="false">
                 <el-form :model="targetP" v-if="targetP" :rules="rulesP" label-width="0px" ref="targetFromP" size="small" label-position="right">
                     <el-form-item label="" v-if="targetP.id">
                         <el-input v-model="targetP.id" class="" size="mini" :disabled="true"><template slot="prepend">编&nbsp;&nbsp;&nbsp;&nbsp;号</template></el-input>
@@ -154,7 +154,7 @@
             </el-dialog>
         </el-dialog>
 
-        <el-dialog title="请求增改" :visible.sync="dialogVisibleR" width="40%" center >
+        <el-dialog title="请求增改" :visible.sync="dialogVisibleR" width="40%" center :close-on-click-modal="false">
             <el-form :model="target" v-if="target" :rules="rules" label-width="0px" ref="targetFrom" size="small" label-position="right">
                 <el-form-item label="" v-if="target.id">
                     <el-input v-model="target.id" class="" size="mini" :disabled="true"><template slot="prepend">编号</template></el-input>
