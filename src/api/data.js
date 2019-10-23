@@ -36,6 +36,17 @@ export function remove(data) {
 }
 
 /**
+ *  数据请求复制
+ * /command/data/request/delete
+ */
+export function copy(data) {
+    return request({
+        url: `command/data/request/copy?id=${data.id}`,
+        method: 'post'
+    })
+}
+
+/**
  *  数据请求参数列表获取
  * /command/data/request
  */

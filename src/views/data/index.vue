@@ -2,6 +2,7 @@
     <div>
         <el-card class="operate-container" shadow="never">
             <el-row :gutter="10" type="flex" style="flex-wrap: wrap;">
+                <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入编号" size="mini" v-model="listQuery.id" clearable><template slot="prepend">编号</template></el-input></el-col>
                 <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入名称" size="mini" v-model="listQuery.name" clearable><template slot="prepend">名称</template></el-input></el-col>
                 <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入URL" size="mini" v-model="listQuery.url" clearable><template slot="prepend">URL</template></el-input></el-col>
                 <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入备注" size="mini" v-model="listQuery.remark" clearable><template slot="prepend">备注</template></el-input></el-col>
@@ -23,7 +24,7 @@
                 <el-table-column label="名称" width="200" align="left" sortable="custom" prop="name"></el-table-column>
                 <el-table-column label="URL" align="left" show-overflow-tooltip prop="url"></el-table-column>
                 <el-table-column label="备注" align="left" sortable="custom" prop="remark"></el-table-column>
-                <el-table-column label="操作" width="180" align="center">
+                <el-table-column label="操作" width="200" align="center">
                     <template slot-scope="scope">
                         <el-button size="mini"
                                    type="text"
@@ -35,7 +36,15 @@
                         </el-button>
                         <el-button size="mini"
                                    type="text"
+                                   @click="handleCopy(scope.row)">复制
+                        </el-button>
+                        <el-button size="mini"
+                                   type="text"
                                    @click="handleDelete(scope.row)">删除
+                        </el-button>
+                        <el-button size="mini"
+                                   type="text"
+                                   @click="handleEdit(scope.row)">复制
                         </el-button>
                     </template>
                 </el-table-column>
@@ -170,7 +179,15 @@
 </template>
 
 <script>
-    import {fetchList, remove, fetchListP, saveRequest, saveRequestParameter, removeParameter} from "../../api/data";
+    import {
+        fetchList,
+        remove,
+        fetchListP,
+        saveRequest,
+        saveRequestParameter,
+        removeParameter,
+        copy
+    } from "../../api/data";
     const defaultListQuery = {
         page: 1,
         size: 10
@@ -277,6 +294,22 @@
             handleEdit(data) {
                 this.target = Object.assign({}, data);
                 this.dialogVisibleR = true;
+            },
+            handleCopy(data) {
+                this.$confirm(`确定要复制该条数据（名称:${data.name}）吗?`, '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    copy(data).then(() => {
+                        this.$message({
+                            message: '复制成功',
+                            type: 'success',
+                            duration: 1000
+                        });
+                        this.getList();
+                    })
+                })
             },
             resetParams() {
                 let order = this.listQuery;
