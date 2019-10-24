@@ -23,7 +23,7 @@
                       @sort-change="changeSort" >
                 <el-table-column label="编号" width="160" align="center" sortable="custom" prop="id"></el-table-column>
                 <el-table-column label="名称" width="200" align="left" sortable="custom" prop="name"></el-table-column>
-                <el-table-column label="组编号" align="left" sortable="custom" prop="groupId"></el-table-column>
+                <el-table-column label="组编号" width="160" align="left" sortable="custom" prop="groupId"></el-table-column>
                 <el-table-column label="URL" align="left" show-overflow-tooltip prop="url"></el-table-column>
                 <el-table-column label="备注" align="left" sortable="custom" prop="remark"></el-table-column>
                 <el-table-column label="操作" width="200" align="center">
@@ -248,7 +248,7 @@
                     '2': "URL参数",
                     '3': "筛选条件",
                     '4': "字段映射",
-                    '5': "常量字段"
+                    '5': "额外字段"
                 },
                 listQueryP: Object.assign({}, defaultListQueryP),
                 listLoadingP: false,

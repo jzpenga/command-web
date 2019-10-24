@@ -219,7 +219,7 @@
                     '2': "URL参数",
                     '3': "筛选条件",
                     '4': "字段映射",
-                    '5': "常量字段"
+                    '5': "额外字段"
                 },
                 listQueryP: Object.assign({}, defaultListQueryP),
                 listLoadingP: false,
