@@ -4,8 +4,6 @@
             <el-row :gutter="10" type="flex" style="flex-wrap: wrap;">
                 <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入编号" size="mini" v-model="listQuery.id" clearable><template slot="prepend">编号</template></el-input></el-col>
                 <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入名称" size="mini" v-model="listQuery.name" clearable><template slot="prepend">名称</template></el-input></el-col>
-                <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入组编号" size="mini" v-model="listQuery.groupId" clearable><template slot="prepend">组编号</template></el-input></el-col>
-                <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入URL" size="mini" v-model="listQuery.url" clearable><template slot="prepend">URL</template></el-input></el-col>
                 <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入备注" size="mini" v-model="listQuery.remark" clearable><template slot="prepend">备注</template></el-input></el-col>
 
             </el-row>
@@ -23,8 +21,6 @@
                       @sort-change="changeSort" >
                 <el-table-column label="编号" width="160" align="center" sortable="custom" prop="id"></el-table-column>
                 <el-table-column label="名称" width="200" align="left" sortable="custom" prop="name"></el-table-column>
-                <el-table-column label="组编号" align="left" sortable="custom" prop="groupId"></el-table-column>
-                <el-table-column label="URL" align="left" show-overflow-tooltip prop="url"></el-table-column>
                 <el-table-column label="备注" align="left" sortable="custom" prop="remark"></el-table-column>
                 <el-table-column label="操作" width="200" align="center">
                     <template slot-scope="scope">
@@ -35,14 +31,6 @@
                         <el-button size="mini"
                                    type="text"
                                    @click="handleParameters(scope.row)">参数
-                        </el-button>
-                        <el-button size="mini"
-                                   type="text"
-                                   @click="handleCopy(scope.row)">复制
-                        </el-button>
-                        <el-button size="mini"
-                                   type="text"
-                                   @click="handlePreview(scope.row)">预览
                         </el-button>
                         <el-button size="mini"
                                    type="text"
@@ -156,19 +144,13 @@
             </el-dialog>
         </el-dialog>
 
-        <el-dialog title="请求增改" :visible.sync="dialogVisibleR" width="40%" center :close-on-click-modal="false">
+        <el-dialog title="请求组增改" :visible.sync="dialogVisibleR" width="40%" center :close-on-click-modal="false">
             <el-form :model="target" v-if="target" :rules="rules" label-width="0px" ref="targetFrom" size="small" label-position="right">
                 <el-form-item label="" v-if="target.id">
                     <el-input v-model="target.id" class="" size="mini" :disabled="true"><template slot="prepend">编号</template></el-input>
                 </el-form-item>
                 <el-form-item label="" prop="name">
                     <el-input v-model="target.name" class="" size="mini" maxlength="64"><template slot="prepend">名称</template></el-input>
-                </el-form-item>
-                <el-form-item label="" prop="groupId">
-                    <el-input v-model.number="target.groupId" class="" size="mini" maxlength="19"><template slot="prepend">组编号</template></el-input>
-                </el-form-item>
-                <el-form-item label="" prop="url">
-                    <el-input v-model="target.url" class="" size="mini" maxlength="512"><template slot="prepend">URL</template></el-input>
                 </el-form-item>
                 <el-form-item label="" prop="remark">
                     <el-input v-model="target.remark" class="" size="mini" maxlength="128"><template slot="prepend">备注</template></el-input>
@@ -180,24 +162,17 @@
             </span>
         </el-dialog>
 
-        <el-dialog title="预览结果" :visible.sync="previewDataFlag" width="40%" top="5vh" center :close-on-click-modal="false">
-            <pre style="overflow-y: auto; max-height: 500px;">{{previewData}}</pre>
-            <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="previewData = null;previewDataFlag = false;" size="mini">关 闭</el-button>
-            </span>
-        </el-dialog>
     </div>
 </template>
 
 <script>
     import {
-        fetchList,
-        remove,
+        fetchGroupList,
+        removeGroup,
         fetchListP,
-        saveRequest,
+        saveRequestGroup,
         saveRequestParameter,
         removeParameter,
-        copy, preview
     } from "../../api/data";
     const defaultListQuery = {
         page: 1,
@@ -233,10 +208,6 @@
                     name: [
                         { required: true, message: '请输入名称', trigger: 'change' },
                         { min: 1, max: 64, message: '长度在 1 到 64 个字符', trigger: 'change' }
-                    ],
-                    url: [
-                        { required: true, message: '请输入URL', trigger: 'change' },
-                        { min: 1, max: 512, message: '长度在 1 到 512 个字符', trigger: 'change' }
                     ],
                     remark: [
                         { min: 1, max: 128, message: '长度在 1 到 128 个字符', trigger: 'change' }
@@ -284,7 +255,7 @@
                     this.listQuery.order = order.order;
                     this.listQuery.prop = order.prop;
                 }
-                fetchList(this.listQuery).then(response => {
+                fetchGroupList(this.listQuery).then(response => {
                     this.listLoading = false;
                     const {content,totalElements} = response;
                     this.list = content;
@@ -308,33 +279,6 @@
                 this.target = Object.assign({}, data);
                 this.dialogVisibleR = true;
             },
-            handleCopy(data) {
-                this.$confirm(`确定要复制该条数据（名称:${data.name}）吗?`, '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    copy(data).then(() => {
-                        this.$message({
-                            message: '复制成功',
-                            type: 'success',
-                            duration: 1000
-                        });
-                        this.getList();
-                    })
-                })
-            },
-            handlePreview(data) {
-                this.$prompt('请输入url参数', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消'
-                }).then(({ value } ) => {
-                    preview(data, value).then((response) => {
-                        this.previewDataFlag = true;
-                        this.previewData = response;
-                    })
-                })
-            },
             resetParams() {
                 let order = this.listQuery;
                 this.listQuery = Object.assign({}, defaultListQuery);
@@ -352,7 +296,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    remove(data).then(() => {
+                    removeGroup(data).then(() => {
                         this.$message({
                             message: '删除成功',
                             type: 'success',
@@ -365,7 +309,7 @@
             onSubmit(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        saveRequest({...this.target}).then(() => {
+                        saveRequestGroup({...this.target}).then(() => {
                             this.$refs[formName].resetFields();
                             this.$message({
                                 message: '操作成功',

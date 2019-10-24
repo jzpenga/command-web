@@ -92,3 +92,38 @@ export function removeParameter(data) {
         method: 'post'
     })
 }
+
+/**
+ *  数据请求组列表获取
+ * /command/data/request/groups
+ */
+export function fetchGroupList(data) {
+    return request({
+        url: `/command/data/request/groups`,
+        method: 'get',
+        params: data
+    })
+}
+
+/**
+ *  数据请求组增改
+ * /command/data/request/groups
+ */
+export function saveRequestGroup(data) {
+    return request({
+        url: `command/data/request/groups`,
+        method: 'post',
+        data: data
+    })
+}
+
+/**
+ *  数据请求删除
+ * /command/data/request//groups/delete
+ */
+export function removeGroup(data) {
+    return request({
+        url: `command/data/request//group/delete?id=${data.id}`,
+        method: 'post'
+    })
+}

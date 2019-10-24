@@ -195,6 +195,18 @@ export const  constantRoutes =[
             }
         ]
     },
+    {
+        path: '/dataGroup',
+        component: Layout,
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/dataGroup'),
+                name: '数据请求组管理',
+                meta: { title: '数据请求组管理', icon: 'role', affix: true }
+            }
+        ]
+    },
   ];
 
 
