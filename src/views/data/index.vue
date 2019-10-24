@@ -95,16 +95,21 @@
                     <el-table-column label="参数名" width="150" align="left" sortable="custom" prop="name"></el-table-column>
                     <el-table-column label="参数值" align="left" show-overflow-tooltip prop="value"></el-table-column>
                     <el-table-column label="参数位置" align="center" sortable="custom" prop="type" :formatter="translateType"></el-table-column>
-                    <el-table-column label="操作" width="120" align="center">
+                    <el-table-column label="操作" width="260" align="center">
                         <template slot-scope="scope">
                             <el-button size="mini"
                                        type="text"
+                                       v-if="scope.row.requestId == listQueryP.requestId"
                                        @click="handleEditP(scope.row)">编辑
                             </el-button>
                             <el-button size="mini"
                                        type="text"
+                                       v-if="scope.row.requestId == listQueryP.requestId"
                                        @click="handleDeleteP(scope.row)">删除
                             </el-button>
+                            <span v-if="scope.row.requestId != listQueryP.requestId">
+                                继承自请求组({{scope.row.requestId}})
+                            </span>
                         </template>
                     </el-table-column>
                 </el-table>

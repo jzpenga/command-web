@@ -4,6 +4,7 @@
             <el-row :gutter="10" type="flex" style="flex-wrap: wrap;">
                 <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入编号" size="mini" v-model="listQuery.id" clearable><template slot="prepend">编号</template></el-input></el-col>
                 <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入名称" size="mini" v-model="listQuery.name" clearable><template slot="prepend">名称</template></el-input></el-col>
+                <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入名称" size="mini" v-model="listQuery.baseUrl" clearable><template slot="prepend">URL前缀</template></el-input></el-col>
                 <el-col :lg="6" :md="8" :sm="12"><el-input placeholder="请输入备注" size="mini" v-model="listQuery.remark" clearable><template slot="prepend">备注</template></el-input></el-col>
 
             </el-row>
@@ -21,6 +22,7 @@
                       @sort-change="changeSort" >
                 <el-table-column label="编号" width="160" align="center" sortable="custom" prop="id"></el-table-column>
                 <el-table-column label="名称" width="200" align="left" sortable="custom" prop="name"></el-table-column>
+                <el-table-column label="URL前缀" align="left" sortable="custom" prop="baseUrl"></el-table-column>
                 <el-table-column label="备注" align="left" sortable="custom" prop="remark"></el-table-column>
                 <el-table-column label="操作" width="200" align="center">
                     <template slot-scope="scope">
@@ -151,6 +153,9 @@
                 </el-form-item>
                 <el-form-item label="" prop="name">
                     <el-input v-model="target.name" class="" size="mini" maxlength="64"><template slot="prepend">名称</template></el-input>
+                </el-form-item>
+                <el-form-item label="" prop="baseUrl">
+                    <el-input v-model="target.baseUrl" class="" size="mini" maxlength="64"><template slot="prepend">URL前缀</template></el-input>
                 </el-form-item>
                 <el-form-item label="" prop="remark">
                     <el-input v-model="target.remark" class="" size="mini" maxlength="128"><template slot="prepend">备注</template></el-input>

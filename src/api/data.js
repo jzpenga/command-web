@@ -119,11 +119,11 @@ export function saveRequestGroup(data) {
 
 /**
  *  数据请求删除
- * /command/data/request//groups/delete
+ * /command/data/request/groups/delete
  */
 export function removeGroup(data) {
     return request({
-        url: `command/data/request//group/delete?id=${data.id}`,
+        url: `command/data/request/groups/delete?id=${data.id}`,
         method: 'post'
     })
 }
