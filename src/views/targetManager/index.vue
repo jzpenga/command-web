@@ -1,27 +1,77 @@
 <template>
+    <div>
+    <el-card class="operate-container" shadow="never">
+        <el-row >
+            <el-col style="text-align: center">
+                <el-button type="primary" size="mini" icon="el-icon-plus" @click="showAddCategoryDialog()">添加一级分类</el-button>
+            </el-col>
+        </el-row>
+    </el-card>
+    <el-card class="card-content" shadow="never">
+        <!--<div style="text-align: right">-->
+            <!--<el-button type="text" size="mini" @click="() => showAddCategoryDialog()">添加一级分类</el-button>-->
+        <!--</div>-->
+        <!--<el-tree :data="treeData"-->
+                 <!--:props="defaultProps"-->
+                 <!--node-key="id"-->
+                 <!--@node-expand="nodeExpand"-->
+                 <!--@node-collapse="nodeCollapse"-->
+                 <!--:default-expanded-keys="expandKeys"-->
+                 <!--:expand-on-click-node="false"-->
+                 <!--@node-click="handleNodeClick">-->
+            <!--<div class="custom-tree-node" slot-scope="{ node, data }">-->
+                <!--<span>{{ data.name }}</span>-->
+                <!--<div class="option">-->
+                    <!--<el-button v-if="isCategoryItem(data)" type="text" size="mini" @click="() => showEditDialog(node, data, false,true)">添加子分类</el-button>-->
+                    <!--<el-button v-if="!isCategoryItem(data)" type="text" size="mini" @click="() => showEditDialog(node, data, false,false)">添加子指标</el-button>-->
+                    <!--<el-button type="text" size="mini" @click="() => showEditDialog(node, data, true,isCategoryItem(data))">编辑</el-button>-->
+                    <!--<el-button type="text" size="mini" @click="() => handleDelete(node, data)">删除</el-button>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</el-tree>-->
 
-    <el-card class="form-container card-content" shadow="never">
-        <div style="text-align: right">
-            <el-button type="text" size="mini" @click="() => showAddCategoryDialog()">添加一级分类</el-button>
-        </div>
-        <el-tree :data="treeData"
-                 :props="defaultProps"
-                 node-key="id"
-                 @node-expand="nodeExpand"
-                 @node-collapse="nodeCollapse"
-                 :default-expanded-keys="expandKeys"
-                 :expand-on-click-node="false"
-                 @node-click="handleNodeClick">
-            <div class="custom-tree-node" slot-scope="{ node, data }">
-                <span>{{ data.name }}</span>
-                <div class="option">
-                    <el-button v-if="isCategoryItem(data)" type="text" size="mini" @click="() => showEditDialog(node, data, false,true)">添加子分类</el-button>
-                    <el-button v-if="!isCategoryItem(data)" type="text" size="mini" @click="() => showEditDialog(node, data, false,false)">添加子指标</el-button>
-                    <el-button type="text" size="mini" @click="() => showEditDialog(node, data, true,isCategoryItem(data))">编辑</el-button>
-                    <el-button type="text" size="mini" @click="() => handleDelete(node, data)">删除</el-button>
-                </div>
-            </div>
-        </el-tree>
+        <el-table
+                :data="tableData"
+                style="width: 100%;"
+                row-key="id"
+                size="mini"
+                stripe border
+                :tree-props="{children: 'child'}">
+            <el-table-column
+                    prop="no"
+                    label="编码"
+                    sortable
+                    width="300">
+            </el-table-column>
+            <el-table-column
+                    prop="name"
+                    label="指标名">
+            </el-table-column>
+            <el-table-column
+                    prop="gradation"
+                    label="排序"
+                    sortable
+                    width="180">
+            </el-table-column>
+            <el-table-column label="操作" width="260" align="center">
+                <template slot-scope="scope">
+                    <el-button v-if="!isCategoryItem(scope.row)" type="text" size="mini" @click="showAddDialog(data)">添加子指标</el-button>
+                    <el-button size="mini"
+                               type="text"
+                               @click="showEditDialog(scope.row)">编辑
+                    </el-button>
+                    <el-button size="mini"
+                               type="text"
+                               @click="handleGradation(scope.row)">顺序
+                    </el-button>
+                    <el-button size="mini"
+                               type="text"
+                               v-if="scope.row.child.length == 0"
+                               @click="handleDelete(scope.row)">删除
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
 
         <el-dialog
                 center
@@ -57,6 +107,9 @@
                 </el-form-item>
                 <el-form-item v-if="!isEditCategory" label="分类名称：" prop="typeName">
                     <el-input  v-model="target.typeName" class="input-width"></el-input>
+                </el-form-item>
+                <el-form-item v-if="!isEditCategory" label="排序值：" prop="gradation">
+                    <el-input v-model="target.gradation" class="input-width"></el-input>
                 </el-form-item>
                 <el-form-item v-if="!isEditCategory" label="手机链接：" prop="url">
                     <el-input v-model="target.url" class="input-width"></el-input>
@@ -109,13 +162,13 @@
             </div>
         </el-dialog>
     </el-card>
-
+    </div>
 </template>
 
 <script>
     import UEUrlSelect from '../../components/UEUrlSelect';
 
-    import {fetchList,saveTarget,deleteTarget,getTargetById} from "../../api/target";
+    import {fetchList,saveTarget,deleteTarget,getTargetById,updateGradationById} from "../../api/target";
     import {config} from "../../utils/config";
     import {getUeToken} from "../../utils/auth";
 
@@ -131,7 +184,8 @@
         tableName:'',
         typeCode:'',
         targetNo:'',
-        typeName:''
+        typeName:'',
+        gradation:'',
     };
     export default {
         name: "Target",
@@ -149,7 +203,8 @@
                     label: 'name'
                 },
                 selectUEUrlDialogVisible:false,
-                selectPadUEUrlDialogVisible:false
+                selectPadUEUrlDialogVisible:false,
+                tableData: [],
             }
         },
         created() {
@@ -165,6 +220,11 @@
                     return data.level == 1;
                 };
             },
+            getGradation() {
+                return function(data){
+                    return data.gradation;
+                };
+            }
         },
         methods: {
             phoneUrlSelect(data){
@@ -183,14 +243,11 @@
                 this.expandKeys.splice(index,1)
             },
             showAddCategoryDialog(){
-                this.showEditDialog(null,{id:0},false,true);
+                this.showEditDialog({id:0});
             },
-            showEditDialog(node, data, isEdit,isEditCategory){
-                this.isEdit = isEdit;
-                this.isEditCategory = isEditCategory;
-                if (isEdit && data.level === 2){
-                    this.isEditCategory = true;
-                }
+            showEditDialog(data){
+                this.isEdit = data.id ? true : false;
+                this.isEditCategory = this.isEdit && data.level === 2;
                 if (this.isEdit){
                     getTargetById(data.id).then((res)=>{
                         this.target = res;
@@ -198,12 +255,34 @@
                     })
                 } else {
                     this.targetDetailDialogVisible = true;
-                    this.target = {...defaultTarget,parentId:data.id}
+                    this.target = {...defaultTarget, parentId:data.id}
                 }
-
             },
-            handleDelete(node, data){
+            showAddDialog(data){
+                this.targetDetailDialogVisible = true;
+                this.target = {...defaultTarget, parentId:data.id}
+            },
+            handleDelete(data){
                 this.deleteTarget([data.id]);
+            },
+            handleGradation(data) {
+                this.$prompt(`请输入指标'${data.name}'的排序值`, '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消'
+                }).then(({ value } ) => {
+                    value = parseInt(value);
+                    if (isNaN(value)) {
+                        this.$message.error('排序值只能输入数字!');
+                        return;
+                    }
+                    updateGradationById(data.id, value).then(() => {
+                        this.$set(data, 'gradation', value);
+                        this.$message({
+                            type: 'success',
+                            message: '修改成功!'
+                        });
+                    })
+                })
             },
             handleNodeClick(data) {
                 //console.log('handleNodeClick', data);
@@ -234,6 +313,7 @@
             getList(){
                 fetchList().then((res) => {
                     this.treeData = res;
+                    this.tableData = res;
                 })
             },
             deleteTarget(ids){

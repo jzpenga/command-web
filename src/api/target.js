@@ -57,3 +57,11 @@ export function deleteTarget(data) {
     data
   })
 }
+
+export function updateGradationById(id, gradation) {
+    return request({
+        url: `/command/target/updateGradationById`,
+        method: 'post',
+        params: {id: id, gradation: gradation}
+    })
+}
