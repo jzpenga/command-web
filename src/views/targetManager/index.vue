@@ -87,39 +87,39 @@
                 <el-form-item label="名称：" prop="name">
                     <el-input v-model="target.name" class="input-width"></el-input>
                 </el-form-item>
-                <el-form-item v-if="!isEditCategory" label="描述：" prop="description">
+                <el-form-item v-if="target.level > 2" label="描述：" prop="description">
                     <el-input type="textarea" v-model="target.description" class="input-width"></el-input>
                 </el-form-item>
-                <el-form-item v-if="!isEditCategory" label="数值类别：" prop="meterType">
+                <el-form-item v-if="target.level > 2" label="数值类别：" prop="meterType">
                     <el-input v-model="target.meterType" class="input-width"></el-input>
                 </el-form-item>
-                <el-form-item v-if="!isEditCategory" label="计量单位：" prop="meterUnit">
+                <el-form-item v-if="target.level > 2" label="计量单位：" prop="meterUnit">
                     <el-input v-model="target.meterUnit" class="input-width"></el-input>
                 </el-form-item>
-                <el-form-item v-if="!isEditCategory" label="表名：" prop="tableName">
+                <el-form-item v-if="target.level > 2" label="表名：" prop="tableName">
                     <el-input v-model="target.tableName" class="input-width"></el-input>
                 </el-form-item>
-                <el-form-item v-if="!isEditCategory" label="分类编码：" prop="typeCode">
+                <el-form-item v-if="target.level > 2" label="分类编码：" prop="typeCode">
                     <el-input v-model="target.typeCode" class="input-width"></el-input>
                 </el-form-item>
-                <el-form-item v-if="!isEditCategory" label="指标编号：" prop="targetNo">
+                <el-form-item label="指标编码：" prop="targetNo">
                     <el-input  v-model="target.targetNo" class="input-width"></el-input>
                 </el-form-item>
-                <el-form-item v-if="!isEditCategory" label="分类名称：" prop="typeName">
+                <el-form-item v-if="target.level > 2" label="分类名称：" prop="typeName">
                     <el-input  v-model="target.typeName" class="input-width"></el-input>
                 </el-form-item>
-                <el-form-item v-if="!isEditCategory" label="排序值：" prop="gradation">
+                <el-form-item label="排序值：" prop="gradation">
                     <el-input v-model="target.gradation" class="input-width"></el-input>
                 </el-form-item>
-                <el-form-item v-if="!isEditCategory" label="手机链接：" prop="url">
+                <el-form-item v-if="target.level > 2" label="手机链接：" prop="url">
                     <el-input v-model="target.url" class="input-width"></el-input>
                     <el-button type="primary" @click="selectUEUrlDialogVisible = true">选择url</el-button>
                 </el-form-item>
-                <el-form-item v-if="!isEditCategory" label="pad链接：" prop="padUrl">
+                <el-form-item v-if="target.level > 2" label="pad链接：" prop="padUrl">
                     <el-input v-model="target.padUrl" class="input-width"></el-input>
                     <el-button type="primary" @click="selectPadUEUrlDialogVisible = true">选择url</el-button>
                 </el-form-item>
-                <el-form-item v-if="!isEditCategory" label="图标：" prop="pic">
+                <el-form-item v-if="target.level > 2" label="图标：" prop="pic">
                     <el-upload
                             class="avatar-uploader"
                             :action="baseUrl+'/command/picture'"
@@ -196,7 +196,6 @@
                 target:defaultTarget,
                 targetDetailDialogVisible: false,
                 isEdit:false,
-                isEditCategory:false,
                 treeData: [],
                 defaultProps: {
                     children: 'child',
@@ -247,20 +246,20 @@
             },
             showEditDialog(data){
                 this.isEdit = data.id ? true : false;
-                this.isEditCategory = this.isEdit && data.level === 2;
                 if (this.isEdit){
                     getTargetById(data.id).then((res)=>{
+                        console.log(res);
                         this.target = res;
                         this.targetDetailDialogVisible = true;
                     })
                 } else {
                     this.targetDetailDialogVisible = true;
-                    this.target = {...defaultTarget, parentId:data.id}
+                    this.target = {...defaultTarget, parentId:data.id, level: 1}
                 }
             },
             showAddDialog(data){
                 this.targetDetailDialogVisible = true;
-                this.target = {...defaultTarget, parentId:data.id}
+                this.target = {...defaultTarget, parentId:data.id, level: data.level + 1}
             },
             handleDelete(data){
                 this.deleteTarget([data.id]);
