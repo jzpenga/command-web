@@ -46,3 +46,14 @@ export function remove(data) {
         method: 'post'
     })
 }
+
+/**
+ *  更据参数名字获取值
+ * /command/parameters/name
+ */
+export function getValueByName(name) {
+    return request({
+        url: `/command/parameters/name?name=${name}`,
+        method: 'get'
+    })
+}

@@ -10,6 +10,7 @@
 
 <script>
     import {config} from "../../utils/config";
+    import {getValueByName} from "../../api/parameter";
 
     export default {
         name: "ue",
@@ -54,6 +55,13 @@
                 // document.getElementById("_password").val("cdsf@119");
                 // document.getElementById("cas_submit").click();
             }
+        },
+        created() {
+            getValueByName('UE.DEFINE').then((res)=>{
+                if (res.value){
+                    this.baseUrl = res.value
+                }
+            })
         }
     }
 </script>
