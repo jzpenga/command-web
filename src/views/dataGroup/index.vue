@@ -118,7 +118,7 @@
             </span>
 
             <el-dialog title="请求参数增改" :visible.sync="dialogVisiblePP" width="40%" center append-to-body :close-on-click-modal="false">
-                <el-form :model="targetP" v-if="targetP" :rules="rulesP" label-width="0px" ref="targetFromP" size="small" label-position="right">
+                <el-form :model="targetP" v-if="targetP" label-width="0px" ref="targetFromP" size="small" label-position="right">
                     <el-form-item label="" v-if="targetP.id">
                         <el-input v-model="targetP.id" class="" size="mini" :disabled="true"><template slot="prepend">编&nbsp;&nbsp;&nbsp;&nbsp;号</template></el-input>
                     </el-form-item>
@@ -147,7 +147,7 @@
         </el-dialog>
 
         <el-dialog title="请求组增改" :visible.sync="dialogVisibleR" width="40%" center :close-on-click-modal="false">
-            <el-form :model="target" v-if="target" :rules="rules" label-width="0px" ref="targetFrom" size="small" label-position="right">
+            <el-form :model="target" v-if="target"  label-width="0px" ref="targetFrom" size="small" label-position="right">
                 <el-form-item label="" v-if="target.id">
                     <el-input v-model="target.id" class="" size="mini" :disabled="true"><template slot="prepend">编号</template></el-input>
                 </el-form-item>

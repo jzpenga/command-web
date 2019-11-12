@@ -1,7 +1,6 @@
 <template>
     <el-card class="form-container" shadow="never">
         <el-form :model="user"
-                 :rules="rules"
                  ref="userFrom"
                  label-width="100px"
                  size="small">

@@ -1,7 +1,6 @@
 <template> 
   <el-card class="form-container" shadow="never">
     <el-form :model="homeAdvertise"
-             :rules="rules"
              ref="homeAdvertiseFrom"
              label-width="150px"
              size="small">

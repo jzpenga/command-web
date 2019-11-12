@@ -57,7 +57,7 @@
         </div>
 
         <el-dialog title="参数增改" :visible.sync="dialogVisible" width="40%" center :close-on-click-modal="false">
-            <el-form :model="target" v-if="target" :rules="rules" label-width="0" ref="targetFrom" size="small" label-position="right">
+            <el-form :model="target" v-if="target"  label-width="0" ref="targetFrom" size="small" label-position="right">
                 <el-form-item label="" v-if="target.id">
                     <el-input v-model="target.id" size="mini" class="" :disabled="true"><template slot="prepend">编号</template></el-input>
                 </el-form-item>
